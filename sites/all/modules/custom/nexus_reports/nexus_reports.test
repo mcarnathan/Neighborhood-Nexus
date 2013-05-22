@@ -1,0 +1,185 @@
+<?php
+
+// $Id$
+
+/**
+ * @file SimpleTests for Nexus Neighborhood module.
+ */
+
+/**
+ * Test case for the Nexus Neighborhood module.
+ */
+class NexusReportsTestCase extends DrupalWebTestCase {
+  function getInfo() {
+    return array(
+      'name' => t('Nexus Reports'),
+      'description' => t('Nexus Reports tests.'),
+      'group' => 'Nexus',
+    );
+  }
+
+  function setUp() {
+    parent::setUp('ahah_helper', 'nexus', 'nexus_reports');
+    $this->populateNexusCache;
+  }
+
+  function tearDown() {
+    cache_clear_all( 'nexus', 'cache', TRUE );
+    parent::tearDown();
+  }
+
+  #{{{ testNexusReportsMenu()
+  /**
+   * Tests for data-center accessability
+   */
+  function testNexusReportsMenu() {
+    $user = $this->drupalCreateUser(array('view nexus reports', 'upload nexus xls data', "manage nexus indicators", "manage nexus"));
+    $this->drupalLogin($user);
+    foreach( array(
+      'data-center-results',
+      'data-center',
+      'data-center/intro_js/indicator',
+      'data-center/intro_js/geography'
+    ) as $url ) {
+      $this->drupalGet($url);
+      $this->assertResponse(200, t("Found $url page."));
+    }
+  }
+  #}}}
+
+  #{{{ testMiscUnitTests()
+  function testMiscUnitTests() {
+    $this->assertEqual(
+      nexus_reports_perm(),
+      array('view nexus reports'),
+      t('Correct permissions returned')
+    );
+  }
+  #}}}
+
+  #{{{ intro form common tests
+  function introFormCommon( $empty_form ) {
+    $this->assertEqual(
+      $empty_form['#action'],
+      url('data-center-results'),
+      t('Check #action')
+    );
+
+    $this->assertTrue(
+      $empty_form['indicator'],
+      t('Indicator is present')
+    );
+    $this->assertEqual(
+      $empty_form['indicator']['#options'],
+      nexus_get_indicator_select(),
+      t('Indicator options match what the backend reports')
+    );
+  }
+  #}}}
+
+  #{{{ testUnselectedIntro()
+  function testUnselectedIntro() {
+    $empty_form = nexus_reports_intro_form( array() );
+
+    // Common tests
+    $this->introFormCommon( $empty_form );
+
+    $this->assertEqual(
+      $empty_form['geography']['explore']['#type'],
+      'markup',
+      t('There is no explore button, just a placeholder.')
+    );
+
+    $this->assertEqual(
+      $empty_form['geography']['#type'],
+      'markup',
+      t('geography is a markup type')
+    );
+
+    //Remove explore which is added to geography after the generator has at it.
+    unset( $empty_form['geography']['explore'] );
+    $this->assertEqual(
+      $empty_form['geography'],
+      nexus_generate_geographies(),
+      t('geography came from the generator')
+    );
+  }
+  #}}}
+
+  #{{{ testIndicatorSelectedIntro()
+  function testIndicatorSelectedIntro() {
+    $form_state['values']['indicator'] = 'population';
+    $empty_form = nexus_reports_intro_form( $form_state );
+
+    // Common tests
+    $this->introFormCommon( $empty_form );
+
+    $this->assertEqual(
+      $empty_form['geography']['explore']['#type'],
+      'markup',
+      t('There is no explore button, just a placeholder.')
+    );
+
+    $this->assertEqual(
+      $empty_form['geography']['#type'],
+      'radios',
+      t('geography is a radio type')
+    );
+
+    //Remove explore which is added to geography after the generator has at it.
+    unset( $empty_form['geography']['explore'] );
+    $this->assertEqual(
+      $empty_form['geography'],
+      nexus_generate_geographies( 'population' ),
+      t('geography came from the generator')
+    );
+  }
+  #}}}
+
+  #{{{ testGeographySelectedIntro()
+  function testGeographySelectedIntro() {
+    $form_state['values']['indicator'] = 'population';
+    $form_state['values']['geography'] = 'TAZ';
+    $empty_form = nexus_reports_intro_form( $form_state );
+
+    // Common tests
+    $this->introFormCommon( $empty_form );
+
+    $this->assertEqual(
+      $empty_form['geography']['#type'],
+      'radios',
+      t('geography is a radio type')
+    );
+
+    $this->assertEqual(
+      $empty_form['geography']['explore']['#type'],
+      'submit',
+      t('There is an explore button')
+    );
+  }
+  #}}}
+
+  #{{{ testGeographyReSelectedIntro()
+  function testGeographyReSelectedIntro() {
+    $form_state['values']['indicator'] = 'population';
+    $form_state['values']['geography'] = 'TAZ';
+    $empty_form = nexus_reports_intro_form( $form_state, 1 );
+
+    // Common tests
+    $this->introFormCommon( $empty_form );
+
+    $this->assertEqual(
+      $empty_form['geography']['#type'],
+      'radios',
+      t('geography is a radio type')
+    );
+
+    $this->assertEqual(
+      $empty_form['geography']['explore']['#type'],
+      'markup',
+      t('There is no explore button')
+    );
+  }
+  #}}}
+
+}

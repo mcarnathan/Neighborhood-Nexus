@@ -1,0 +1,958 @@
+<?php
+// $Id$
+
+#{{{ Configuration, settings, and permissions, menus
+#{{{ nexus_reports_perm()
+/**
+ * Custom Permissions.
+ */
+function nexus_reports_perm() {
+    return array( 'view nexus reports' );
+}
+#}}}
+#{{{ nexus_reports_menu()
+/**
+ * Hook Menu
+ */
+function nexus_reports_menu() {
+  $items = array();
+
+  $items['data-center'] = array(
+    'title'         => t('Data Center'),
+    'description'   => t('Find data'),
+    'page callback' => 'nexus_reports',
+    'access arguments' => array('view nexus reports'),
+  );
+  $items['data-center/locate_census_tract'] = array(
+    'title'         => t('Data Center'),
+    'description'   => t('Find census'),
+    'page callback' => 'nexus_reports_census',
+    'access arguments' => array('view nexus reports'),
+  );
+  $items['data-center/locate_super_district'] = array(
+    'title'         => t('Data Center'),
+    'description'   => t('Find district'),
+    'page callback' => 'nexus_reports_district',
+    'access arguments' => array('view nexus reports'),
+  );
+
+  $items['data-center/locate_census_tract_js'] = array(
+    'title'         => t('Data Center'),
+    'description'   => t('Find census'),
+    'page callback' => 'nexus_reports_census_js',
+    'access arguments' => array('view nexus reports'),
+    'type' => 'MENU_CALLBACK',
+  );
+  $items['data-center/locate_super_district_js'] = array(
+    'title'         => t('Data Center'),
+    'description'   => t('Find district'),
+    'page callback' => 'nexus_reports_district_js',
+    'access arguments' => array('view nexus reports'),
+    'type' => 'MENU_CALLBACK',
+  );
+
+  $items['data-center/intro_js/indicator'] = array(
+    'title'         => t('Data Center Geographies'),
+    'description'   => t('Geographies AHAH'),
+    'page callback' => 'nexus_reports_intro_js_ind',
+    'access arguments' => array('view nexus reports'),
+    'type' => 'MENU_CALLBACK',
+  );
+  $items['data-center/intro_js/geography'] = array(
+    'title'         => t('Data Center Geographies'),
+    'description'   => t('Geographies AHAH'),
+    'page callback' => 'nexus_reports_intro_js_geo',
+    'access arguments' => array('view nexus reports'),
+    'type' => 'MENU_CALLBACK',
+  );
+  $items['data-center/report_js/report'] = array(
+    'title'         => t('Data Center Results'),
+    'description'   => t('Results AHAH'),
+    'page callback' => 'nexus_reports_results_js',
+    'access arguments' => array('view nexus reports'),
+    'type' => 'MENU_CALLBACK',
+  );
+
+  return $items;
+}
+#}}}
+#}}}
+
+#{{{ Intro ahah functions
+#{{{ nexus_reports_intro_js()
+/**
+ * This is the function that does the work for ahah calls on the intro page
+ */
+function nexus_reports_intro_js( $operator = 'indicator' ) {
+  #{{{ ahh startup tasks
+  include_once 'modules/node/node.pages.inc';
+  $form_state = array('storage' => NULL, 'submitted' => FALSE);
+  $form_build_id = $_POST['form_build_id'];
+
+  // Get the form from the cache.
+  $form = form_get_cache($form_build_id, $form_state);
+
+# IE Debugging
+#  drupal_json(array(
+#    'status' => TRUE,
+#    'data' => '<pre>' . var_export( $_POST, TRUE ) . '</pre>',
+#  ));
+#  return;
+
+  $args = $form['#parameters'];
+  $form_id = array_shift($args);
+
+  // We will run some of the submit handlers so we need to disable redirecting.
+  $form['#redirect'] = FALSE;
+
+  // We need to process the form, prepare for that by setting a few internals
+  // variables.
+  $form['#post'] = $_POST;
+  $form['#programmed'] = FALSE;
+  $form_state['post'] = $_POST;
+
+  // Build, validate and if possible, submit the form.
+  $form_state['nexus_block_redirect'] = TRUE;
+  if( $operator == "indicator" ) {
+    $form_state['nexus_hide_button'] = TRUE;
+  }
+  else {
+    $form_state['nexus_hide_button'] = FALSE;
+  }
+  drupal_process_form($form_id, $form, $form_state);
+
+
+  // This call recreates the form relying solely on the form_state that the
+  // drupal_process_form set up.
+  $form = drupal_rebuild_form($form_id, $form_state, $args, $form_build_id);
+  #}}}
+
+  // Render the new output.
+
+  #{{{ This is from ahah_helper, for nested ahah
+  // Get the JS settings so we can merge them.
+  $javascript = drupal_add_js(NULL, NULL, 'header');
+  $settings = call_user_func_array('array_merge_recursive', $javascript['setting']);
+  #}}}
+
+  // Output for the indictor or geography depending.
+  if( $operator == 'indicator' ) {
+    $geo_form = $form['geography'];
+    unset($geo_form['#prefix'], $geo_form['#suffix']); // Prevent duplicate wrappers.
+    $output = theme('status_messages') . drupal_render($geo_form);
+    drupal_json(array(
+      'status' => TRUE,
+      'data' => $output,
+      'settings' => array('ahah' => $settings['ahah']),
+    ));
+  }
+  elseif( $operator == 'geography' ) {
+    $explore_form = $form['geography']['explore'];
+    unset($explore_form['#prefix'], $explore_form['#suffix']); // Prevent duplicate wrappers.
+    $output = theme('status_messages') . drupal_render($explore_form);
+    drupal_json(array(
+      'status' => TRUE,
+      'data' => $output,
+      'settings' => array('ahah' => $settings['ahah']),
+    ));
+  }
+}
+#}}}
+#{{{ nexus_reports_intro_js_geo()
+/**
+ * geography wrapper for nexus_reports_intro_js()
+ */
+function nexus_reports_intro_js_geo() {
+  return nexus_reports_intro_js( 'geography' );
+}
+#}}}
+#{{{ nexus_reports_intro_js_ind()
+/**
+ * indicator wrapper for nexus_reports_intro_js()
+ */
+function nexus_reports_intro_js_ind() {
+  return nexus_reports_intro_js( 'indicator' );
+}
+#}}}
+#}}}
+#{{{ Results ahah functions
+#{{{ nexus_reports_results_js()
+/**
+ * This is the function that does the work for ahah calls on the intro page
+ */
+function nexus_reports_results_js() {
+  #{{{ ahh startup tasks
+  include_once 'modules/node/node.pages.inc';
+  $form_state = array('storage' => NULL, 'submitted' => FALSE);
+  $form_build_id = $_POST['form_build_id'];
+
+  // Get the form from the cache.
+  $form = form_get_cache($form_build_id, $form_state);
+  $args = $form['#parameters'];
+  $form_id = array_shift($args);
+
+  // We will run some of the submit handlers so we need to disable redirecting.
+  $form['#redirect'] = FALSE;
+
+  // We need to process the form, prepare for that by setting a few internals
+  // variables.
+  $form['#post'] = $_POST;
+  $form['#programmed'] = FALSE;
+  $form_state['post'] = $_POST;
+
+  $form_state['nexus_results'] = TRUE;
+  $form_state['nexus_block_redirect'] = TRUE;
+
+  // Build, validate and if possible, submit the form.
+  drupal_process_form($form_id, $form, $form_state);
+
+  // This call recreates the form relying solely on the form_state that the
+  // drupal_process_form set up.
+  $form = drupal_rebuild_form($form_id, $form_state, $args, $form_build_id);
+  #}}}
+
+  // Render the new output.
+
+  #{{{ This is from ahah_helper, for nested ahah
+  // Get the JS settings so we can merge them.
+  $javascript = drupal_add_js(NULL, NULL, 'header');
+  $settings = call_user_func_array('array_merge_recursive', $javascript['setting']);
+  #}}}
+
+    $indicator = $form_state['values']['indicator'];
+    #if( ! $indicator ) $indicator = $form_state['post']['indicator'];
+    $geography = $form_state['values']['geography'];
+    #if( ! $geography ) $geography = $form_state['post']['geography'];
+    $data = nexus_reports_results( $indicator, $geography, $form_state );
+
+    drupal_json(array(
+      'status' => TRUE,
+      'data' => $data,
+      'settings' => array('ahah' => $settings['ahah']),
+    ));
+}
+#}}}
+#}}}
+
+#{{{ nexus_reports_form()
+/**
+ */
+function nexus_reports_form( &$form_state ) {
+  $form = array();
+
+  // This is from the ahah_helper module.
+  // It allows for nested ahah
+  ahah_helper_register($form, $form_state);
+
+  $indgeo = nexus_reports_get_indicator_geography( $form_state );
+
+  if ( $indgeo['valid'] || $form_state['nexus_results'] ) {
+    $form = nexus_reports_results_form( $form_state, $indgeo );
+  }
+  else {
+    $form = nexus_reports_intro_form( $form_state, $indgeo );
+  }
+
+  return $form;
+}
+#}}}
+
+#{{{ Intro Form
+#{{{ nexus_reports_intro_form()
+/**
+ * Generate the intro form, or regenerate it for ahah calls.
+ */
+function nexus_reports_intro_form( $form_state, $indgeo ) {
+  $form = array();
+  $indicator = $form_state['values']['indicator'];
+  $geography = $form_state['values']['geography'];
+  if ( ! $indicator ) $indicator = $indgeo['indicator'];
+  if ( ! $geography ) $geography = $indgeo['geography'];
+
+  $options = nexus_get_indicator_select();
+  $form['indicator'] = array(
+    '#title' => t('Indicators'),
+    '#type' => 'nexusradios',
+    '#options' => $options,
+    '#ahah' => array(
+      'event' => 'change',
+      'method' => 'replace',
+      'wrapper' => 'geographies-ahah',
+      'path' => 'data-center/intro_js/indicator',
+    )
+  );
+  if ( $indicator ) {
+    $form['indicator']['#default_value'] = $indicator;
+  }
+
+  // Let the geography generator create the geography element
+  $form['geography'] = nexus_generate_geographies( $indicator, $geography );
+
+  // If a geography is selected, and not being reset by ahah (hide_botton) then
+  // generate the button, otherwise put in an ahah placeholder.
+  if ( $form_state['nexus_hide_button'] || ! $indicator ) {
+    $form['geography']['explore'] = array(
+      '#type' => 'markup',
+      '#weight' => 200,
+      '#value' => '<div id="explore-ahah"></div>'
+    );
+    $form['continue'] = array(
+      '#type' => 'submit',
+      '#value' => t( 'Continue' ),
+    );
+  }
+  else {
+    $form['geography']['explore'] = array(
+      '#type' => 'submit',
+      '#value' => t('Explore Atlanta'),
+      '#prefix' => '<div id="explore-ahah">',
+      '#suffix' => '</div>',
+      '#weight' => 200,
+      '#attributes' => array( 'style' => 'margin-top: 20px;' ),
+    );
+  }
+  $form['#submit'] = array( 'nexus_reports_intro_form_submit' );
+
+
+  return $form;
+}
+#}}}
+#{{{ nexus_generate_geographies()
+/**
+ * This function generates the geographies section of the intro form.
+ * helper for nexus_reports_intro_form
+ */
+function nexus_generate_geographies( $indicator = NULL, $geography = NULL ) {
+  if( ! $indicator ) {
+    return array(
+      '#type' => 'markup',
+      '#value' => '<div id="geographies-ahah"></div>',
+    );
+  }
+
+  $options = nexus_indicator_geography_options( $indicator );
+
+  $form = array(
+    '#prefix' => '<div id="geographies-ahah">',
+    '#title' => t('Geographies'),
+    '#suffix' => '</div>',
+    '#type' => 'nexusradios',
+    '#options' => $options['available'],
+    '#ahah' => array(
+      'event' => 'change',
+      'method' => 'replace',
+      'wrapper' => 'explore-ahah',
+      'path' => 'data-center/intro_js/geography',
+    )
+  );
+  if ( $geography ) {
+    $form['#default_value'] = $geography;
+  }
+  $form['disabled'] = array(
+    '#type' => 'nexusradios',
+    '#options' => $options['unavailable'],
+    '#disabled' => TRUE,
+    '#weight' => 100,
+    '#prefix' => '<div id="geo-disabled">',
+    '#suffix' => '</div>',
+  );
+
+  return $form;
+}
+#}}}
+#{{{ nexus_indicator_geography_options()
+/**
+ * This function returns a list of both available and unavailable geographies
+ * by indicator.
+ * returns: array(
+ *   available   => array( geo_id => goe_label ),
+ *   unavailable => array( geo_id => goe_label ),
+ * )
+ */
+function nexus_indicator_geography_options( $indicator ) {
+  $cid = "nexus_intro_ind_geo_options_$indicator";
+
+  // if the nexus_geography_indicator_pairs cache is empty, we need to rebuild.
+  $temp = cache_get('nexus_geography_indicator_pairs');
+  if ( $temp ) {
+      $options = cache_get( $cid )->data;
+      if ( $options ) return $options;
+  }
+  $options = array();
+
+  // Most efficient way to build the cache of geography labels.
+  nexus_get_geographies();
+
+  foreach ( nexus_get_geography_indicator_pairs() as $set ) {
+    if ( $set->indicator == $indicator ) {
+      $options['available'][ $set->geography_type ] = nexus_get_geography_label( $set->geography_type );
+      // if the geo was already set in unavailable remove it.
+      unset( $options['unavailable'][ $set->geography_type ] );
+    } // if geo is not in available, put it in unavailable.
+    elseif ( ! $options['available'][ $set->geography_type ] ) {
+      $options['unavailable'][ $set->geography_type ] = nexus_get_geography_label( $set->geography_type );
+    }
+  }
+
+  cache_set( $cid, $options );
+  return $options;
+}
+#}}}
+#{{{ nexus_reports_intro_form_submit()
+/**
+ * submit hook for nexus_reports_form()
+ */
+function nexus_reports_intro_form_submit( $form, &$form_state ) {
+  $indgeo = nexus_reports_get_indicator_geography();
+  $indicator = $form_state['values']['indicator'];
+  $geography = $form_state['values']['geography'];
+  if ( ! $indicator ) $indicator = $indgeo['indicator'];
+  if ( ! $geography ) $geography = $indgeo['geography'];
+  $go = ! $form_state['nexus_block_redirect'];
+
+  if ( $go && $indicator && $geography ) {
+    $bookmark = nexus_reports_bookmark( $indicator, $geography, $form_state );
+    drupal_goto( 'data-center', "nexus_json=" . json_encode( $bookmark ));
+  }
+
+  if ( $go ) {
+    drupal_goto( 'data-center', "nexus_indicator=$indicator&nexus_geography=$geography" );
+  }
+}
+#}}}
+#}}}
+#{{{ Results Form
+#{{{ nexus_reports_results_form()
+/**
+ */
+function nexus_reports_results_form( $form_state, $indgeo ) {
+  $form = array();
+
+  $indicator = $form_state['values']['indicator'];
+  if( ! $indicator ) $indicator = $indgeo['indicator'];
+  $geography = $form_state['values']['geography'];
+  if( ! $geography ) $geography = $indgeo['geography'];
+
+  $measures = nexus_get_measurements_select( $indicator );
+  $measure_defaults = nexus_reports_selected_measures( $indicator, $geography, $measures, $form_state );
+  $years = nexus_get_years_select( $indicator, $geography );
+  $year_defaults = nexus_reports_selected_years( $indicator, $geography, $years, $form_state );
+  $filter = nexus_reports_selected_filter( $indicator, $geography, $form_state );
+  $filter_string;
+  if ( $filter ) {
+    foreach( $filter as $f ) {
+      if ( $filter_string ) $filter_string .= "\n$f";
+      else $filter_string = $f;
+    }
+  }
+
+  $form['start'] = array(
+    '#type' => 'markup',
+    '#value' => '<div id="os_nexus_results_form">',
+    '#weight' => -1000,
+  );
+  $form['end'] = array(
+    '#type' => 'markup',
+    '#value' => '</div>',
+    '#weight' => 1000,
+  );
+  $form['indicator'] = array(
+    '#type' => 'hidden',
+    '#value' => $indicator,
+  );
+  $form['geography'] = array(
+    '#type' => 'hidden',
+    '#value' => $geography,
+  );
+  $form['#submit'] = array( 'nexus_reports_intro_form_submit' );
+  $form['#action'] = url( "data-center" ) . "?nexus_indicator=$indicator&nexus_geography=$geography";
+
+  $form['measure_set'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'Measurements',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['measure_set']['measurements'] = array(
+    '#type' => 'nexuscheckboxes',
+    '#options' => nexus_get_measurements_select( $indicator, 30 ),
+    '#default_value' => $measure_defaults,
+    '#ahah' => array(
+      'event' => 'change',
+      'method' => 'replace',
+      'wrapper' => 'nexus-reports-right',
+      'path' => 'data-center/report_js/report'
+    )
+  );
+
+  $form['year_set'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'Years',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['year_set']['years'] = array(
+    '#type' => 'nexuscheckboxes',
+    '#options' => $years,
+    '#default_value' => $year_defaults,
+    '#ahah' => array(
+      'event' => 'change',
+      'method' => 'replace',
+      'wrapper' => 'nexus-reports-right',
+      'path' => 'data-center/report_js/report'
+    )
+  );
+
+  $form['geography_set'] = array(
+    '#type' => 'fieldset',
+    '#title' => "Filter by " . nexus_get_geography_label( $geography ),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  if ( variable_get( 'nexus_locators_active', FALSE )) {
+    $census_geo_app = variable_get( 'nexus_locator_census', "" );
+    $district_geo_app = variable_get( 'nexus_locator_district', "" );
+
+    if ( $census_geo_app && nexus_get_geography_label( $geography ) == 'Census Tract' ) {
+      $form['geography_set']['locate_js'] = array(
+        '#type' => 'submit',
+        '#value' => t('Find your census tract'),
+        '#attributes' => array(
+            'class' => 'locate_button_hide',
+        ),
+        '#ahah' => array(
+          'event' => 'click',
+          'method' => 'replace',
+          'wrapper' => 'nexus-reports-right',
+          'path' => 'data-center/locate_census_tract_js',
+        )
+      );
+      $form['geography_set']['locate'] = array(
+        '#type' => 'markup',
+        '#value' => '<div class="locate_nojs"><a target="_new" href="data-center/locate_census_tract">Find your census tract</a></div>',
+      );
+    }
+    elseif( $district_geo_app && nexus_get_geography_label( $geography ) == 'Superdistrict' ) {
+      $form['geography_set']['locate_js'] = array(
+        '#type' => 'submit',
+        '#value' => t('Find your super district'),
+        '#attributes' => array(
+            'class' => 'locate_button_hide',
+        ),
+        '#ahah' => array(
+          'event' => 'click',
+          'method' => 'replace',
+          'wrapper' => 'nexus-reports-right',
+          'path' => 'data-center/locate_super_district_js',
+        )
+      );
+      $form['geography_set']['locate'] = array(
+        '#type' => 'markup',
+        '#value' => '<div class="locate_nojs"><a target="_new" href="data-center/locate_super_district">Find your super district</a></div>',
+      );
+    }
+  }
+  $form['geography_set']['filter'] = array(
+    '#type' => 'textarea',
+    '#default_value' => $filter_string,
+    '#cols' => 14,
+  );
+  $form['geography_set']['filter_button'] = array(
+    '#type' => 'submit',
+    '#value' => t('Filter'),
+    '#weight' => 10,
+    '#attributes' => array(
+        'class' => 'filter_button_hide',
+    ),
+    '#ahah' => array(
+      'event' => 'click',
+      'method' => 'replace',
+      'wrapper' => 'nexus-reports-right',
+      'path' => 'data-center/report_js/report',
+    )
+  );
+
+  $form['continue'] = array(
+    '#type' => 'submit',
+    '#value' => t( 'Update' ),
+    '#weight' => 300,
+  );
+
+  return $form;
+}
+#}}}
+#}}}
+
+#{{{ nexus_reports_query
+function nexus_reports_query( $indicator, $geography, &$form_state ) {
+  $measures = nexus_get_measurements_select( $indicator );
+  $measures_selected = nexus_reports_selected_measures( $indicator, $geography, $measures, $form_state );
+  $years = nexus_get_years_select( $indicator, $geography );
+  $years_selected = nexus_reports_selected_years( $indicator, $geography, $years, $form_state );
+  $filter = nexus_reports_selected_filter( $indicator, $geography, $form_state );
+
+  unset( $measures_selected[0] );
+  unset( $years_selected[0] );
+
+  $debug = '<pre>';
+  #$debug .= "state: " . var_export( $form_state, TRUE );
+  $debug .= "\nIndicator: " . $indicator;
+  $debug .= "\nGeography: " . $geography;
+  $debug .= "\nMeasures: " . var_export( $measures, TRUE );
+  $debug .= "\nYears: " . var_export( $years, TRUE );
+  $debug .= "\nm_select: " . var_export( $measures_selected, TRUE );
+  $debug .= "\ny_select: " . var_export( $years_selected, TRUE );
+
+  $query = array(
+    'geography' => $geography,
+    'indicator' => $indicator,
+    'order_by' => array( 'label' ),
+    'columns' => nexus_get_geography_columns( $geography ),
+    'filter' => $filter,
+  );
+
+  foreach( $measures_selected as $measure => $mval ) {
+    if( ! $mval ) continue;
+    foreach ( $years_selected as $year => $yval ) {
+      if( ! $yval ) continue;
+      $query['columns'][] = array(
+        'measure' => $measure,
+        'year' => $year,
+      );
+    }
+  }
+
+  $debug .= "\nQuery: " . var_export( $query, TRUE );
+  $debug .= "</pre>";
+
+  # uncomment this to debug instead of printing the report
+  #return $debug . "<pre>" . var_export( $results, TRUE ) . "</pre>";
+  # uncomment this to print the query string that will be used.
+  #return "<pre>" . json_encode($query) . "</pre>";
+
+  return $query;
+}
+#}}}
+#{{{ nexus_reports_bookmark
+function nexus_reports_bookmark( $indicator, $geography, &$form_state ) {
+  $measures = nexus_get_measurements_select( $indicator );
+  $measures_selected = nexus_reports_selected_measures( $indicator, $geography, $measures, $form_state );
+  $years = nexus_get_years_select( $indicator, $geography );
+  $years_selected = nexus_reports_selected_years( $indicator, $geography, $years, $form_state );
+  $filter = nexus_reports_selected_filter( $indicator, $geography, $form_state );
+
+  $bookmark = array(
+    'indicator' => $indicator,
+    'geography' => $geography,
+    'measures_selected' => $measures_selected,
+    'years_selected' => $years_selected,
+    'filter' => $filter,
+  );
+
+  return $bookmark;
+}
+#}}}
+
+#{{{ Filters
+function nexus_filter_column( &$results, $name ) {
+  $columns = $results->columns;
+  $rows = $results->rows;
+
+  $column_number = NULL;
+
+  for( $i = 0; $i < count($columns); $i++ ) {
+    if ( $columns[$i] == $name ) {
+      $column_number = $i;
+      continue;
+    }
+  }
+  if( ! $column_number ) return $results;
+
+  $new_rows = array();
+  array_splice( $columns, $column_number, 1 );
+  foreach ( $rows as $row ) {
+    array_splice( $row, $column_number, 1 );
+    $new_rows[] = $row;
+  }
+
+  $results->columns = $columns;
+  $results->rows = $new_rows;
+}
+
+function nexus_filter_empty_rows( &$results ) {
+  $rows = $results->rows;
+  $new_rows = array();
+  foreach ( $rows as $row ) {
+    $title = array_shift( $row );
+    if ( array_sum( $row )) {
+      array_unshift( $row, $title );
+      $new_rows[] = $row;
+    }
+  }
+  $results->rows = $new_rows;
+}
+#}}}
+
+#{{{ nexus_reports_results
+function nexus_reports_results( $indicator, $geography, &$form_state = array()) {
+  $indicator_label = nexus_get_indicator_label( $indicator );
+  $geography_label = nexus_get_geography_label( $geography );
+
+  $query = nexus_reports_query( $indicator, $geography, $form_state );
+  $bookmark = nexus_reports_bookmark( $indicator, $geography, $form_state );
+
+  $download = nexus_backend_url() ."/query?" . http_build_query(
+    array(
+      'json' => json_encode( $query ),
+      'content-type' => 'application/vnd.ms-excel'
+    )
+  );
+
+  $max = nexus_max_results();
+  if ( $max != 'All' ) {
+    $query['limit'] = $max;
+  }
+  $results = nexus_query( $query );
+  nexus_filter_column( $results, 'Acres' );
+  nexus_filter_empty_rows( $results );
+
+  $bm_json = json_encode( $bookmark );
+
+
+  $out .= "<h2>You are viewing $indicator_label data for $geography_label.";
+  $out .= '<a href="' . url( "data-center" ) . '">Change</a></h2>';
+  $out .= drupal_get_form(
+    'nexus_reports_xls_download_form',
+    $download,
+    $bm_json,
+    '<div class="nexus_links">',
+      //Button 1
+      "<a href='" . url( "data-center" ) . "?nexus_json=" . $bm_json . "'>Link to this report</a>"
+  . '</div>'
+  . '<div id="nexus-reports-results">'
+  .   theme( 'table', $results->columns, $results->rows, NULL, NULL, FALSE )
+  . "</div>"
+  . '<div class="nexus_links">',
+      //Button 2
+      "<a href='" . url( "data-center" ) . "?nexus_json=" . $bm_json . "'>Link to this report</a>"
+  . "</div>"
+  );
+  return $out;
+}
+
+function nexus_reports_xls_download_form( &$form_state, $download, $bm_json, $pre = NULL, $inner = NULL, $post = NULL ) {
+  $form['#action'] = "/data-center?nexus_json=$bm_json";
+  $form['nexus_url'] = array(
+    '#type' => 'hidden',
+    '#value' => $download,
+  );
+  $form['pre'] = array(
+    '#type' => 'markup',
+    '#value' => $pre,
+    '#weight' => 10
+  );
+  $form['nexus_button_a'] = array(
+    '#title' => t('Download all records to Excel'),
+    '#type' => 'submit',
+    '#value' => t('Download all records to Excel'),
+    '#weight' => 20
+  );
+  $form['inner'] = array(
+    '#type' => 'markup',
+    '#value' => $inner,
+    '#weight' => 30
+  );
+  $form['nexus_button_b'] = array(
+    '#title' => t('Download all records to Excel'),
+    '#type' => 'submit',
+    '#value' => t('Download all records to Excel'),
+    '#weight' => 40
+  );
+  $form['post'] = array(
+    '#type' => 'markup',
+    '#value' => $post,
+    '#weight' => 50
+  );
+  return $form;
+}
+
+function nexus_reports_xls_download_form_submit( $form, &$form_state ) {
+  $url = $form_state['values']['nexus_url'];
+  if ( nexus_proxy_download() ) {
+    nexus_download_url( $url );
+  }
+  else {
+    $form_state['redirect'] = $url;
+  }
+}
+
+#}}}
+
+#{{{ Pages
+#{{{ nexus_reports()
+/**
+ */
+function nexus_reports() {
+  drupal_add_js( drupal_get_path( 'module', "nexus_reports" ) . '/nexus_reports.js', 'module' );
+  $out .= '<div id="nexus_reports_page_wrapper">';
+  $out .= "<br />";
+  $out .= '<div id="nexus-reports-form-wrapper">';
+  $out .= drupal_get_form('nexus_reports_form' );
+  $out .= '</div>';
+  $indgeo = nexus_reports_get_indicator_geography();
+  if( $indgeo['valid'] ) {
+    $out .= '<div id="nexus-reports-right">';
+    $out .= nexus_reports_results( $indgeo['indicator'], $indgeo['geography']);
+    $out .= '</div>';
+  }
+  $out .= '</div>';
+  return $out;
+}
+#}}}
+#{{{ nexus_reports_census()
+/**
+ */
+function nexus_reports_census() {
+  $census_geo_app = variable_get( 'nexus_locator_census', "" );
+  //<iframe id="nexus_external_app_frame" src="http://www.atlantaregional.com/html/LocateYourCensusTract.html">
+  $out = '
+<div id="nexus_reports_census">
+<iframe id="nexus_external_app_frame" src="' . $census_geo_app . '">
+<p>iframes not supported, please click <a href="' . $census_geo_app . '">here</a>.</p>
+</iframe>
+</div>';
+  return $out;
+}
+#}}}
+#{{{ nexus_reports_district()
+/**
+ */
+function nexus_reports_district() {
+  $district_geo_app = variable_get( 'nexus_locator_district', "" );
+  //<iframe id="nexus_external_app_frame" src="http://www.atlantaregional.com/html/LocateYourSuperDistrict.html">
+  $out = '
+<div id="nexus_reports_district">
+<iframe id="nexus_external_app_frame" src="' . $district_geo_app . '">
+<p>iframes not supported, please click <a href="' . $district_geo_app . '">here</a>.</p>
+</iframe>
+</div>';
+  return $out;
+}
+#}}}
+#{{{ nexus_reports_census()
+/**
+ */
+function nexus_reports_census_js() {
+    drupal_json(array(
+      'status' => TRUE,
+      'data' => nexus_reports_census(),
+      'settings' => array('ahah' => $settings['ahah']),
+    ));
+}
+#}}}
+#{{{ nexus_reports_district()
+/**
+ */
+function nexus_reports_district_js() {
+    drupal_json(array(
+      'status' => TRUE,
+      'data' => nexus_reports_district(),
+      'settings' => array('ahah' => $settings['ahah']),
+    ));
+}
+#}}}
+#}}}
+
+#{{{ Helpers
+#{{{ nexus_reports_selected_filter
+function nexus_reports_selected_filter( $indicator, $geography, &$form_state ) {
+  static $out;
+  if(isset( $out)) return $out;
+  $out = array();
+
+  $indgeo = nexus_reports_get_indicator_geography();
+  $filter;
+
+  if ( $indgeo['json'] ) $filter = $indgeo['json']->filter;
+  else $filter = preg_split("/[\n\r]+/s", $form_state['values']['filter']);
+
+  #Remove empty values
+  foreach ( $filter as $f ) {
+    if( $f ) {
+      $out[] = $f;
+    }
+  }
+
+  return $out;
+}
+#}}}
+#{{{ nexus_reports_selected_measures
+function nexus_reports_selected_measures( $indicator, $geography, $measures, &$form_state ) {
+  static $measure_defaults;
+  if( isset( $measure_defaults )) return $measure_defaults;
+  
+  $indgeo = nexus_reports_get_indicator_geography();
+  if ( $indgeo['json'] ) {
+    foreach( $measures as $name => $title ) {
+      if( $indgeo['json']->measures_selected->{$name} )
+        $measure_defaults[$name] = $name;
+    }
+  }
+  if( $measure_defaults ) return $measure_defaults;
+
+  $measure_defaults = $form_state['values']['measurements'];
+  if( $measure_defaults ) return $measure_defaults;
+  $measure_defaults = array();
+  foreach( $measures as $name => $label ) {
+    $measure_defaults[$name] = $name;
+  }
+  return $measure_defaults;
+}
+#}}}
+#{{{ nexus_reports_selected_years
+function nexus_reports_selected_years( $indicator, $geography, $years, &$form_state ) {
+  static $year_defaults;
+  if( isset( $year_defaults )) return $year_defaults;
+  $year_defaults = array();
+
+  $indgeo = nexus_reports_get_indicator_geography();
+  if ( $indgeo['json'] ) {
+    foreach( $years as $year ) {
+      if( $indgeo['json']->years_selected->{$year} )
+        $year_defaults[$year] = $year;
+    }
+    return $year_defaults;
+  }
+
+  $year_defaults = $form_state['values']['years'];
+  if( $year_defaults ) return $year_defaults;
+
+  $year_list = array_keys( $years );
+  rsort( $year_list );
+  $year_default[$year_list[0]] = $year_list[0];
+  return $year_default;
+}
+#}}}
+#{{{ nexus_reports_get_indicator_geography
+function nexus_reports_get_indicator_geography( &$form_state = NULL) {
+  static $out;
+  if ( $out ) return $out;
+  $out = array(
+    'indicator' => $_GET['nexus_indicator'],
+    'geography' => $_GET['nexus_geography'],
+    'raw_json' => $_GET['nexus_json'],
+  );
+  if ( $form_state ) {
+    if( ! $out['indicator'] ) $out['indicator'] = $form_state['values']['indicator'];
+    if( ! $out['geography'] ) $out['geography'] = $form_state['values']['geography'];
+  }
+  if( $out['raw_json'] ) {
+      $out['json'] = json_decode( $out['raw_json'] );
+      $out['indicator'] = $out['json']->indicator;
+      $out['geography'] = $out['json']->geography;
+  }
+  $out['valid'] = ( $out['json'] || ( $out['indicator'] && $out['geography'] ));
+  return $out;
+}
+#}}}
+#}}}

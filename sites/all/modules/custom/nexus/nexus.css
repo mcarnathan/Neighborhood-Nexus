@@ -1,0 +1,189 @@
+/* $Id */
+
+/**
+ * @file
+ *   OpenSourcery custom CSS
+ */
+
+.indicator-controls label {
+    width: 100px;
+    float: left;
+    clear: left;
+}
+
+.indicator-controls a {
+    margin-left: 10px;
+    margin-right: 10px;
+    clear: none;
+    float: left;
+}
+
+.indicator-controls a:link,
+.indicator-controls a:visited,
+.indicator-controls a:hover
+{
+    text-decoration: underline;
+}
+
+.indicator-controls input {
+    border: none;
+    background: none;
+    color: #78A795;
+    text-decoration: underline;
+    font-weight: bold;
+    font-family:Verdana,Arial,Helvetica,sans-serif;
+    font-style:normal;
+    font-variant:normal;
+    line-height:normal;
+    float: left;
+    clear: right;
+}
+
+.form-radios {
+    width: 300px;
+}
+
+.form-item:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+.form-item {
+    clear: both;
+}
+
+.form-radios .form-item {
+    float: left;
+    clear: none;
+    width: 150px;
+}
+
+#nexus-reports-intro-form .form-submit {
+}
+
+#nexus-reports-intro-form .form-item label {
+    padding-top: 10px;
+}
+
+#geo-disabled .form-item label {
+  color: #999999;
+}
+
+#nexus-reports-form {
+  float: left;
+}
+
+#nexus-reports-form:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+#nexus-reports-results {
+  float: left;
+  overflow: visible;
+  overflow: auto;
+  width: 730px;
+  clear: both;
+  margin-bottom: 15px;
+}
+
+#nexus-reports-results .even {
+    background: #b4bccf;
+}
+
+#nexus-reports-results .odd {
+    background: #ebf4f3;
+}
+
+#nexus-reports-right {
+  float: left;
+  border-left: 1px solid #78A795;
+  margin-left: 10px;
+  padding-left: 4px;
+  width: 730px;
+}
+
+#os_nexus_results_form {
+  width: 200px;
+}
+
+#nexus-reports-right a {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#content_top {
+    clear: both;
+    width: 950px;
+    float: left;
+}
+
+#content_top .block {
+    min-height: 1px;
+}
+
+#nexus-reports-xls-download-form {
+  float: left;
+  clear: left;
+}
+
+.nexus_links {
+  clear: left;
+}
+
+.progress-disabled {
+  display: none;
+}
+
+.radio_input,
+.check_input {
+  float: left;
+  height: 2em;
+  width: 24px;
+  text-align: left;
+  padding: none;
+  margin: none;
+}
+.radio_label,
+.check_label {
+  text-align: left;
+  padding: none;
+  margin: none;
+}
+
+.filter_button_hide {
+  display: none;
+}
+
+#nexus_reports_page_wrapper {
+    width: 960px;
+}
+
+#nexus_external_app_frame {
+  height:1200px;
+  width:100%;
+  border: none;
+}
+
+.locate_button_hide {
+  display: none;
+  border: none;
+  background: none;
+  color:#1582DC;
+  font-weight:bold;
+  padding: 0;
+}
+.locate_button_hide:hover {
+  color: #55BBDD;
+}
+
+.hide_no_js {
+  display: none;
+}
+

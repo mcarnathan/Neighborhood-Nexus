@@ -1,0 +1,992 @@
+<?php
+// $Id$
+
+drupal_add_css(drupal_get_path('module', 'nexus')  .'/nexus.css', 'theme');
+
+#{{{ Configuration, settings, and permissions, menus, cache
+#{{{ nexus_backend_url()
+/**
+ * Get backend root URL.
+ */
+function nexus_backend_url() {
+  return variable_get( 'nexus_backend_url', "http://127.0.0.1:3000/REST" );
+}
+#}}}
+#{{{ nexus_proxy_download()
+/**
+ * Specify weather the 'download indicator' link should direct to the backend, or proxy the data.
+ */
+function nexus_proxy_download() {
+  return variable_get( 'nexus_proxy_download', 'Off' );
+}
+#}}}
+#{{{ nexus_max_results()
+/**
+ * Get max results.
+ */
+function nexus_max_results() {
+  return variable_get( 'nexus_max_results', 50 );
+}
+#}}}
+#{{{ nexus_admin_settings_form()
+/**
+ * settings page/form
+ */
+function nexus_admin_settings_form() {
+  $form = array();
+  $form['nexus_backend_url'] = array(
+    '#title' => t('Configure backend URL'),
+    '#description' => t('Enter the link to the backend interface'),
+    '#type' => 'textfield',
+    '#default_value' => variable_get( 'nexus_backend_url', "http://127.0.0.1:3000/REST" ),
+    '#required' => TRUE,
+  );
+  $form['nexus_proxy_download'] = array(
+    '#title' => t('Backend file proxy'),
+    '#description' => t('If users are not allowed read access to the backend, then you must proxy downloadable files. If read access is allowed then proxy should be off.'),
+    '#type' => 'radios',
+    '#default_value' => variable_get( 'nexus_proxy_download', 'Off' ),
+    '#options' => array( 'Off', 'On' ),
+    '#required' => TRUE,
+  );
+  $form['nexus_max_results'] = array(
+    '#title' => t('Maximum number of results.'),
+    '#description' => t('Maximum number of results to display in the reporting tool.'),
+    '#type' => 'select',
+    '#default_value' => variable_get( 'nexus_max_results', 50 ),
+    '#options' => array( 10 => 10, 25 => 25, 50 => 50, 100 => 100, 1000 => 1000, 'All' => 'All' ),
+    '#required' => TRUE,
+  );
+  $form['nexus_locators_active'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable geography locators'),
+    '#default_value' => variable_get( 'nexus_locators_active', TRUE ),
+  );
+  $form['nexus_locator_census'] = array(
+    '#type' => 'textfield',
+    '#title' => t('URL for census tract locator application'),
+    '#default_value' => variable_get( 'nexus_locator_census', "" ),
+  );
+  $form['nexus_locator_district'] = array(
+    '#type' => 'textfield',
+    '#title' => t('URL for super district locator application'),
+    '#default_value' => variable_get( 'nexus_locator_district', "" ),
+  );
+
+  return system_settings_form( $form );
+}
+#}}}
+#{{{ nexus_perm()
+/**
+ * Custom Permissions.
+ */
+function nexus_perm() {
+    return array('upload nexus xls data', "manage nexus indicators", "manage nexus");
+}
+#}}}
+#{{{ nexus_menu()
+/**
+ * Hook Menu
+ * Creates the xlsupload, indicator, and settings pages.
+ */
+function nexus_menu() {
+  $items = array();
+
+  $items['admin/settings/nexus/xlsupload'] = array(
+    'title'         => t('Upload Data'),
+    'description'   => t('Used to upload a file for the backend'),
+    'page callback' => 'nexus_upload_page',
+    'access arguments' => array('upload nexus xls data'),
+  );
+
+  $items['admin/settings/nexus/indicators'] = array(
+    'title'         => t('Manage Indicators'),
+    'description'   => t('Used to manage data indicators'),
+    'page callback' => 'nexus_indicators_page',
+    'access arguments' => array('manage nexus indicators'),
+  );
+
+  $items['admin/settings/nexus'] = array(
+    'title'         => t('Nexus Configuration'),
+    'description'   => t('Configuration for Nexus backend'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array( 'nexus_admin_settings_form' ),
+    'access arguments' => array('manage nexus'),
+  );
+
+  return $items;
+}
+#}}}
+#{{{ nexus_rebuild_cache()
+/**
+ * This function will call several data retrieval functions
+ * in order to build up the cache.
+ */
+function nexus_rebuild_cache( $only = NULL ) {
+  if ( $only == "geography" ) {
+    cache_clear_all( 'nexus_geo', 'cache', TRUE );
+  }
+  elseif ( $only == "indicator" ) {
+    cache_clear_all( 'nexus_ind', 'cache', TRUE );
+  }
+  else {
+    cache_clear_all( 'nexus', 'cache', TRUE );
+  }
+
+  // Calling each of these functions will build up the cache;
+
+  if ( $only == 'indicator' || ! $only ) {
+    nexus_get_indicators();
+    nexus_get_indicator_names();
+    nexus_get_indicator_select();
+  }
+
+  if ( $only == 'geography' || ! $only ) {
+    nexus_get_geographies();
+    nexus_get_geography_names();
+    nexus_get_geography_select();
+    nexus_get_geography_indicator_pairs();
+  }
+}
+#}}}
+#}}}
+
+#{{{ Backend communication functions
+#{{{ nexus_query()
+/**
+ * This function will send a query to the backend
+ * Query should be a datastructure, this function
+ * will handle converting it to json.
+ */
+function nexus_query ( $query ) {
+  $json = json_encode( $query );
+  $data = http_build_query(array( 'json' => $json ));
+  $url = nexus_backend_url() . "/query?$data";
+  return nexus_get_from_backend( $url, $data );
+}
+#}}}
+#{{{ nexus_get_from_backend( $url = NULL, $data = NULL, $method = "GET" )
+/**
+ * send a query to the backend, and return the deserialised json it sends back
+ * If there is a communications error, or error with the request, it will be
+ * reported here. It is up to the function calling this to report any errors the
+ * server reports through the JSON returned.
+ */
+function nexus_get_from_backend( $url = NULL, $data = NULL, $method = "GET" ) {
+  $request = drupal_http_request(
+    $url,
+    array( 'Content-Type' => 'application/json' ),
+    $method,
+    $data
+  );
+
+  $error = NULL;
+
+  if (( ! $request->headers ) || ( $request->code < 200 ) || ( $request->code >= 500 )) {
+    $error = $request->error or t('Unknown Error');
+  }
+  elseif ( $request->headers['Content-Type'] != 'application/json' ) {
+    $error = $request->data or t('Unknown Error');
+  }
+
+  if ( $error ) {
+    drupal_set_message(
+      t( "Error communicating with the reporting system: %error",
+      array( '%error' => $error )),
+      'error'
+    );
+    return NULL;
+  }
+  return json_decode( $request->data );
+}
+#}}}
+#{{{ nexus_get_resource( $item )
+/**
+ * Find a resource URL listed on the backends front page.
+ */
+function nexus_get_resource( $item ) {
+  $cid = "unexp_nexus_resource_$item";
+  $url = cache_get( $cid )->data;
+  if ( $url ) return $url;
+
+  #If it is not cached then find it.
+  $resources = nexus_get_from_backend( nexus_backend_url());
+  if ( ! $resources ) return NULL;
+  foreach( $resources as $resource ) {
+    if ( $resource->name == $item ){
+      $url = $resource->url;
+      break;
+    }
+  }
+  cache_set( $cid, $url );
+  return $url;
+}
+#}}}
+#{{{ nexus_get_indicators()
+/**
+ * Get an array of indicator objects from the backend
+ */
+function nexus_get_indicators() {
+  $cid = "nexus_indicators";
+  $data = cache_get( $cid )->data;
+  if ( $data ) return $data;
+
+  $data = nexus_get_from_backend( nexus_get_resource( 'indicator' ) );
+  foreach( $data as $indicator ) {
+    $id = $indicator->id;
+    $label = $indicator->label;
+    cache_set( "nexus_ind_label_$id", $label );
+  }
+  cache_set( $cid, $data );
+  return $data;
+}
+#}}}
+#{{{ nexus_get_indicator_label()
+/**
+ * Get the label for the specified indicator-id
+ */
+function nexus_get_indicator_label( $indicator ) {
+  $cid = "nexus_ind_label_$indicator";
+  $data = cache_get( $cid )->data;
+  if ( $data ) return $data;
+
+  $data = nexus_get_from_backend( nexus_backend_url() . '/indicator/pk/' . $indicator )->label;
+  cache_set( $cid, $data );
+  return $data;
+}
+#}}}
+#{{{ nexus_get_indicator_names()
+/**
+ * Get a list of indicator names from the backend
+ */
+function nexus_get_indicator_names() {
+  $cid = "nexus_indicator_names";
+  $list = cache_get( $cid )->data;
+  if ( $list ) return $list;
+
+  $list = array();
+  $indicators = nexus_get_indicators();
+  if ( ! $indicators ) return NULL;
+  foreach ( $indicators as $indicator ) {
+    array_push( $list, $indicator->label );
+  }
+  cache_set( $cid, $list );
+  return $list;
+}
+#}}}
+#{{{ nexus_get_indicator_select()
+/**
+ * Get a list of indicator label => id pairs from the backend
+ */
+function nexus_get_indicator_select() {
+  $cid = "nexus_indicator_select";
+  $list = cache_get( $cid )->data;
+  if ( $list ) return $list;
+
+  $list = array();
+  $indicators = nexus_get_indicators();
+  if ( ! $indicators ) return NULL;
+  foreach ( $indicators as $indicator ) {
+    $list[ $indicator->id ] = $indicator->label;
+  }
+  cache_set( $cid, $list );
+  return $list;
+}
+#}}}
+#{{{ nexus_get_measurements_select()
+/**
+ * Get a list of measurements label => id pairs from the backend for the specified indicator
+ */
+function nexus_get_measurements_select( $indicator ) {
+  $cid = "nexus_measurements_select_$indicator";
+  $list = cache_get( $cid )->data;
+  if ( $list ) return $list;
+
+  $list = array();
+
+  $url;
+  foreach( nexus_get_indicators() as $ind ) {
+    if ( $ind->id == $indicator ) {
+      $url = $ind->related->indicator_measure;
+      break;
+    }
+  }
+
+  foreach( nexus_get_from_backend( $url ) as $measure ) {
+    $label = $measure->label;
+    $list[$measure->measure] = $label;
+  }
+
+  cache_set( $cid, $list );
+  return $list;
+}
+#}}}
+#{{{ nexus_get_geographies()
+/**
+ * Get an array of geography objects from the backend
+ */
+function nexus_get_geographies() {
+  $cid = "nexus_geographies";
+  $data = cache_get( $cid )->data;
+  if ( $data ) return $data;
+
+  $data = nexus_get_from_backend( nexus_get_resource( 'geography_type' ) );
+  if ( ! $data ) return NULL;
+
+  // While we are here we should cache the labels to avoid extra backend calls later.
+  // This has the added bonus of refreshing these values that otherwise rarely expire.
+  foreach ( $data as $geography ) {
+    $lcid = "unexp_nexus_geo_label_" . $geography->id;
+    cache_set( $lcid, $geography->label );
+
+    $ccid = "nexus_geo_columns_" . $geography->id;
+    $columns = array();
+    foreach( $geography->columns as $column ) {
+      $label = $column->label;
+      if ( $label == "Unique ID" ) $label = $geography->label;
+      $columns[] = array(
+        'column' => $column->id,
+        'label' => $label,
+      );
+    }
+    cache_set( $ccid, $columns );
+  }
+
+  cache_set( $cid, $data );
+  return $data;
+}
+#}}}
+#{{{ nexus_get_geography_columns()
+function nexus_get_geography_columns( $geography ) {
+  $cid = "nexus_geo_columns_" . $geography;
+  nexus_get_geographies(); //gen cache
+  $data = cache_get( $cid )->data;
+  if ( $data ) return $data;
+}
+#}}}
+#{{{ nexus_get_geography_names()
+/**
+ * Get a list of geography names from the backend
+ */
+function nexus_get_geography_names() {
+  $cid = 'nexus_geography_names';
+  $list = cache_get( $cid )->data;
+  if ( $list ) return $list;
+
+  $list = array();
+  $geographies = nexus_get_geographies();
+  if ( ! $geographies ) return NULL;
+  foreach ( $geographies as $geography ) {
+    array_push( $list, $geography->label );
+  }
+  cache_set( $cid, $list );
+  return $list;
+}
+#}}}
+#{{{ nexus_get_geography_select()
+/**
+ * Get a list of geography label => id pairs from the backend
+ */
+function nexus_get_geography_select() {
+  $cid = 'nexus_geography_select';
+  $list = cache_get( $cid )->data;
+  if ( $list ) return $list;
+
+  $list = array();
+  $geographies = nexus_get_geographies();
+  if ( ! $geographies ) return NULL;
+  foreach ( $geographies as $geography ) {
+    $list[ $geography->id ] = $geography->label;
+  }
+  cache_set( $cid, $list );
+  return $list;
+}
+#}}}
+#{{{ nexus_get_geography_indicator_pairs()
+/**
+ * Get a list of paired indicators and geographies
+ */
+function nexus_get_geography_indicator_pairs() {
+  $cid = 'nexus_geography_indicator_pairs';
+  $data = cache_get( $cid )->data;
+  if( $data ) return $data;
+
+  $data = nexus_get_from_backend( nexus_get_resource( 'indicator_geography_type_all' ) );
+
+  nexus_generate_years_cache( $data );
+
+  cache_set( $cid, $data );
+  return $data;
+}
+#}}}
+#{{{ nexus_get_geography_label()
+/**
+ * Get the label for the specified geography-id
+ */
+function nexus_get_geography_label( $geography ) {
+  // This will rarely if ever change, don't expire with the others.
+  $cid = "unexp_nexus_geo_label_$geography";
+  $data = cache_get( $cid )->data;
+  if ( $data ) return $data;
+
+  $data = nexus_get_from_backend( nexus_backend_url() . '/geography_type/pk/' . $geography )->label;
+  cache_set( $cid, $data );
+  return $data;
+}
+#}}}
+#{{{ nexus_generate_years_cache()
+/*
+ * Used to generate the years per indicator-geography pair cache.
+ */
+function nexus_generate_years_cache( $pairs ) {
+  $years = array();
+  foreach ( $pairs as $item ) {
+    $indicator = $item->indicator;
+    $geography = $item->geography_type;
+    $data = nexus_get_from_backend( $item->related->{'-years'} );
+    foreach( $data as $obj ) {
+      $years[$indicator][$geography][] = $obj->year;
+    }
+  }
+  foreach( $years as $indicator => $geographies ) {
+    foreach( $geographies as $geography => $data ) {
+      $cid = "nexus_years_" . $indicator . "_" . $geography;
+      rsort( $data );
+      cache_set( $cid, $data );
+    }
+  }
+}
+#}}}
+#{{{ nexus_get_years()
+/*
+ * Get the years available ot the specified indicator-geography pair.
+ */
+function nexus_get_years( $indicator, $geography ) {
+  $cid = "nexus_years_" . $indicator . "_" . $geography;
+  $data = cache_get( $cid )->data;
+  if( ! $data ) {
+    nexus_get_geography_indicator_pairs();
+    $data = cache_get( $cid )->data;
+  }
+  return $data;
+}
+#}}}
+#{{{ nexus_get_years_select()
+/*
+ * Get the years for a specified pair (indicator-geography) in select format.
+ */
+function nexus_get_years_select( $indicator, $geography ) {
+  $cid = "nexus_years_select_" . $indicator . "_" . $geography;
+  $data = cache_get( $cid )->data;
+  if( ! $data ) {
+    $years = nexus_get_years( $indicator, $geography );
+    if( ! $years ) return array();
+    foreach( $years as $year ) {
+      $data[ $year ] = $year;
+    }
+  }
+  cache_set( $cid, $data );
+  return $data;
+}
+#}}}
+#{{{ nexus_download_indicator()
+/**
+ * Downloads an XLS file for an indicator
+ * Takes an indicator object
+ */
+function nexus_download_indicator( $indicator ) {
+    return nexus_download_url( $indicator->related->{'-full'} );
+}
+#}}}
+#{{{ nexus_download_url()
+function nexus_download_url( $url ) {
+ $request = drupal_http_request(
+    $url,
+    array( 'Content-Type' => 'application/vnd.ms-excel' ),
+    'GET'
+  );
+  if ($request->error) {
+    drupal_set_message(
+      t(
+        "Error retrieving file from reporting system: %error",
+        array( '%error' => $request->error )
+      ),
+      'error'
+    );
+    return;
+  }
+  $headers = $request->headers;
+  drupal_set_header( 'Content-Type: ' . $headers['Content-Type'] . ' charset=utf-8' );
+  drupal_set_header( 'Content-Disposition: ' . $headers['Content-Disposition'] );
+  print $request->data;
+  exit( 0 );
+}
+#}}}
+#{{{ nexus_delete_indicator()
+/**
+ * Delete an indicator
+ * Takes an indicator object
+ */
+function nexus_delete_indicator( $indicator ) {
+  $results = nexus_get_from_backend( $indicator->url, NULL, "DELETE" );
+  cache_clear_all( 'nexus_geography_indicator_pairs', 'cache' );
+  nexus_rebuild_cache( 'indicator' ); #Clear the nexus cache
+  if ( $results->error ) {
+    drupal_set_message(
+      t(
+        "Unable to delete indicator '%name': %error",
+        array(
+          '%name' => $indicator->id,
+          '%error' => $results->error
+        )
+      ),
+      'error'
+    );
+  }
+  else if ( $results->deleted ) {
+    drupal_set_message(t("Deleted indicator: %name", array( '%name' => $indicator->id )));
+  }
+  else {
+    drupal_set_message(t("Unable to delete indicator: %name", array( '%name' => $indicator->id )), 'error');
+  }
+  return $results;
+}
+#}}}
+#}}}
+
+#{{{ helper functions to process data from the backend
+#{{{ nexus_indicator_download_path( $indicator )
+/**
+ * returns the excel file download path for a specific indicator.
+ */
+function nexus_indicator_download_path( $indicator ) {
+  return $indicator->related->{'-full'} . "?content-type=application/ms-excel";
+}
+#}}}
+#}}}
+
+#{{{ Upload form and processing
+#{{{ nexus_upload_form()
+/**
+ * Produces the xls upload form.
+ */
+function nexus_upload_form() {
+  $form['#attributes']['enctype'] = 'multipart/form-data';
+  $form['indicator'] = array(
+    '#title' => t('Select an indicator to reload data for'),
+    '#type' => 'select',
+    '#options' => nexus_get_indicator_select(),
+  );
+  $form['datafile'] = array(
+    '#title' => t('XLS Data File'),
+    '#type' => 'file',
+  );
+  $form['submit'] = array(
+    '#type' => 'submit', 
+    '#value' => t('Upload')
+  );
+
+  return $form;
+}
+#}}}
+#{{{ nexus_upload_form_submit( $form, &$form_state )
+/**
+ * Processes the upload form when it is submitted
+ */
+function nexus_upload_form_submit( $form, &$form_state ) {
+  if($file = file_save_upload('datafile')) {
+    # Error if it is not an excel file.
+    if( $file->filemime != "application/vnd.ms-excel" ) {
+      drupal_set_message(t("This upload utility only accepts excel files."), 'error');
+      return;
+    }
+
+    $url = NULL;
+    foreach ( nexus_get_indicators() as $indicator ) {
+        if ( $indicator->id == $form_state['values']['indicator'] ) {
+            $url = $indicator->related->{'-full'};
+        }
+    }
+
+    #Open the newly recieved file, read it into memory.
+    $binary = file_get_contents( $file->filepath );
+
+    # Send the file
+    $request = drupal_http_request(
+      $url,
+      array( 'Content-Type' => $file->filemime, 'Accept' => 'application/json' ),
+      'PUT',
+      $binary
+    );
+
+    $json = json_decode( $request->data );
+
+    if ( $json->errors ) {
+
+      # Limit the number of errors to display, but also provide and accurate
+      # message.
+      $max = count( $json->errors );
+      $display = array( '%max' => $max );
+      $limit = 10;
+      if ( $max > $limit ) {
+        $max = $limit;
+        $display['%max'] = t('first') . " $limit";
+      }
+
+      drupal_set_message(
+        t('There was a problem uploading the file, displaying %max error(s):', $display ),
+        'error'
+      );
+
+      for ( $i = 0; $i < $max; $i++ ) {
+        if ( $error = $json->errors[$i] ) {
+          drupal_set_message( $error, 'error' );
+        }
+      }
+    }
+    elseif ( $request->code >= 400 ) {
+      drupal_set_message( t("Error uploading file."), 'error' );
+      drupal_set_message( $request->error, 'error' );
+    }
+    elseif( $json->status == 'created' ) {
+        drupal_set_message( t( "Data uploaded successfully" ));
+    }
+
+    //clear the nexus cache
+    nexus_rebuild_cache();
+
+  }
+  else {
+    form_set_error('datafile', t("Failed to load the file."));
+  }
+}
+#}}}
+#{{{ nexus_upload_page()
+/**
+ * Combine the forms into a usable page.
+ */
+function nexus_upload_page() {
+  return "<br />" . drupal_get_form('nexus_manage_form') . "<br />" . drupal_get_form('nexus_upload_form');
+}
+#}}}
+#}}}
+
+#{{{ Indicator creation form and processing
+#{{{ nexus_create_form()
+/**
+ * Form for creating a new indicator
+ */
+function nexus_create_form() {
+  $form['create'] = array(
+    '#title' => t('Create a new indicator'),
+    '#type' => 'fieldset',
+  );
+  $form['create']['new_indicator'] = array(
+    '#type' => 'textfield',
+    '#name' => 'new_indicator',
+    '#required' => TRUE
+  );
+  $form['create']['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Create'),
+  );
+  return $form;
+}
+#}}}
+#{{{ nexus_create_form_submit( $form, &$form_state )
+/**
+ * Process the indicator creation form.
+ */
+function nexus_create_form_submit( $form, &$form_state ) {
+
+  $new = $form_state['values']['new_indicator'];
+  if( ! $new ) return;
+
+  $json = json_encode( array( 'label' => $new ));
+  $url = nexus_get_resource( 'indicator' );
+  if ( ! $url ) {
+    drupal_set_message( t('Unable to obtain indicator from backend'), 'error' );
+    return;
+  }
+
+  $results = nexus_get_from_backend( $url, $json, $method = "POST" );
+  //clear the nexus cache
+  nexus_rebuild_cache( 'indicator' );
+  if( $results->errors ) {
+    drupal_set_message(
+      t(
+        "Error creating new indicator: %error",
+        array( '%error' => $results->errors[0] )
+      ),
+      'error'
+    );
+  }
+  else {
+    drupal_set_message( t("Created new indicator: %ind", array( '%ind' => $new )));
+  }
+}
+#}}}
+#}}}
+
+#{{{ indicator management form and processing
+#{{{ nexus_indicators_form()
+/**
+ * Generate the form for downloading/deleting indicators
+ */
+function nexus_indicators_form() {
+  $indicators = nexus_get_indicators();
+  if ( ! $indicators ) return NULL;
+
+  $form['indicators'] = array(
+    '#title' => t('Manage Indicators'),
+    '#type' => 'fieldset',
+  );
+  foreach( $indicators as $indicator ) {
+    $name = $indicator->id;
+    $label = $indicator->label;
+    $xls = nexus_indicator_download_path( $indicator );
+    $form['indicators']["$name-label"] = array(
+      '#type' => 'markup',
+      '#value' => "<label>$label</label>",
+      '#prefix' => '<div class="container-inline indicator-controls">'
+    );
+    $form['indicators']["$name-download"] = array(
+      '#type' => 'submit',
+      '#name' => "Indicator-$name",
+      '#value' => t("Download data as XLS")
+    );
+    $form['indicators']["$name-delete"] = array(
+      '#type' => 'submit',
+      '#value' => t('Delete Indicator'),
+      '#name' => "Indicator-$name",
+      '#suffix' => '</div>'
+    );
+  }
+  return $form;
+}
+#}}}
+#{{{ nexus_indicators_form_submit( $form, &$form_state )
+/**
+ * Process the indicator management form
+ */
+function nexus_indicators_form_submit( $form, &$form_state ) {
+  $button = $form_state['clicked_button']['#name'];
+  # Work around the drupal bug where pressing the same delete in 2 windows at
+  # once causes the second one to assume a different button was pressed.
+  # causing potential badness.
+  $value = $form_state['clicked_button']['#value'];
+  if (( ! $_POST[$button] ) || $_POST[$button] != $value ) {
+    drupal_set_message( t('The form submitted was out of date, nothing done.'), 'error' );
+    return;
+  }
+  foreach( nexus_get_indicators() as $indicator ) {
+    $name = $indicator->id;
+    if ( $button == "Indicator-$name" ) {
+      if ( $value == t('Delete Indicator')) {
+        return nexus_delete_indicator( $indicator );
+      }
+      else if ( $value == t('Download data as XLS')) {
+        if ( nexus_proxy_download() ) {
+          nexus_download_indicator( $indicator );
+        }
+        else {
+          $form_state['redirect'] = nexus_indicator_download_path( $indicator );
+        }
+      }
+    }
+  }
+}
+#}}}
+#{{{ nexus_indicators_page()
+/**
+ * generate a usable page for managing indicators.
+ */
+function nexus_indicators_page() {
+  return "<br />"
+    . drupal_get_form('nexus_xls_form')
+    . "<br />"
+    . drupal_get_form('nexus_create_form')
+    . "<br />"
+    . drupal_get_form('nexus_indicators_form');
+}
+#}}}
+#}}}
+
+#{{{ Helper forms to switch between upload and management pages
+# These were created near the beginnign when I was getting started. I am now
+# certain this is the wrong way to do this. But for now I am focusing on making
+# new things work, I will come back and refactor this when there is time.
+#{{{ nexus_manage_form()
+/**
+ * Creates a simple button to take us to the indicators page
+ */
+function nexus_manage_form() {
+  $form['#action'] = url('admin/settings/nexus/indicators');
+  $form['manage'] = array(
+    '#title' => t('Manage Indicators'),
+    '#type' => 'submit',
+    '#value' => t('Manage Indicators'),
+  );
+  return $form;
+}
+#}}}
+#{{{ nexus_xls_form()
+/**
+ * Creates a simple button to take us to the xlsupload page
+ */
+function nexus_xls_form() {
+  $form['#action'] = url('admin/settings/nexus/xlsupload');
+  $form['manage'] = array(
+    '#title' => t('Upload XLS'),
+    '#type' => 'submit',
+    '#value' => t('Upload XLS'),
+  );
+  return $form;
+}
+#}}}
+#}}}
+
+#{{{ Add in some theme 'stuff' to have custom radio/checkbox types
+function nexus_theme() {
+    return array(
+        'nexusradio' => array (
+            'arguments' => array('element' => NULL)
+        ),
+        'nexusradios' => array (
+            'arguments' => array('element' => NULL)
+        ),
+        'nexuscheckbox' => array (
+            'arguments' => array('element' => NULL)
+        ),
+        'nexuscheckboxes' => array (
+            'arguments' => array('element' => NULL)
+        )
+    );
+}
+
+function nexus_elements() {
+  $type['nexusradios'] = array('#input' => TRUE, '#process' => array('expand_nexusradios'));
+  $type['nexusradio'] = array('#input' => TRUE, '#default_value' => NULL, '#process' => array('form_expand_ahah'));
+  $type['nexuscheckboxes'] = array('#input' => TRUE, '#process' => array('expand_nexuscheckboxes'), '#tree' => TRUE);
+  $type['nexuscheckbox'] = array('#input' => TRUE, '#return_value' => 1, '#process' => array('form_expand_ahah'));
+  return $type;
+}
+#}}}
+
+#{{{ Custom radio types
+function theme_nexusradio($element) {
+  _form_set_class($element, array('form-radio'));
+  $output = '<input type="radio" ';
+  $output .= 'id="'. $element['#id'] .'" ';
+  $output .= 'name="'. $element['#name'] .'" ';
+  $output .= 'value="'. $element['#return_value'] .'" ';
+  $output .= (check_plain($element['#value']) == $element['#return_value']) ? ' checked="checked" ' : ' ';
+  $output .= drupal_attributes($element['#attributes']) .' />';
+  if (!is_null($element['#title'])) {
+    $output = '<div class="radio_input">' . $output . '</div>';
+    $output .= '<div class="radio_label"><label class="option" for="'. $element['#id'] .'">'. $element['#title'] .'</label></div>';
+  }
+
+  unset($element['#title']);
+  return theme('form_element', $element, $output);
+}
+
+function theme_nexusradios($element) {
+  $class = 'form-radios';
+  if (isset($element['#attributes']['class'])) {
+    $class .= ' '. $element['#attributes']['class'];
+  }
+  $element['#children'] = '<div class="'. $class .'">'. (!empty($element['#children']) ? $element['#children'] : '') .'</div>';
+  if ($element['#title'] || $element['#description']) {
+    unset($element['#id']);
+    return theme('form_element', $element, $element['#children']);
+  }
+  else {
+    return $element['#children'];
+  }
+}
+
+function expand_nexusradios($element) {
+  if (count($element['#options']) > 0) {
+    foreach ($element['#options'] as $key => $choice) {
+      if (!isset($element[$key])) {
+        // Generate the parents as the autogenerator does, so we will have a
+        // unique id for each radio button.
+        $parents_for_id = array_merge($element['#parents'], array($key));
+        $element[$key] = array(
+          '#type' => 'nexusradio',
+          '#title' => $choice,
+          '#return_value' => check_plain($key),
+          '#default_value' => isset($element['#default_value']) ? $element['#default_value'] : NULL,
+          '#attributes' => $element['#attributes'],
+          '#parents' => $element['#parents'],
+          '#id' => form_clean_id('edit-'. implode('-', $parents_for_id)),
+          '#ahah' => isset($element['#ahah']) ? $element['#ahah'] : NULL,
+        );
+      }
+    }
+  }
+  return $element;
+}
+#}}}
+
+#{{{ Custom checkbox types
+function theme_nexuscheckbox($element) {
+  _form_set_class($element, array('form-checkbox'));
+  $checkbox = '<input ';
+  $checkbox .= 'type="checkbox" ';
+  $checkbox .= 'name="'. $element['#name'] .'" ';
+  $checkbox .= 'id="'. $element['#id'] .'" ' ;
+  $checkbox .= 'value="'. $element['#return_value'] .'" ';
+  $checkbox .= $element['#value'] ? ' checked="checked" ' : ' ';
+  $checkbox .= drupal_attributes($element['#attributes']) .' />';
+
+  if (!is_null($element['#title'])) {
+    $checkbox = '<div class="check_input">' . $checkbox . '</div>';
+    $checkbox .= '<div class="check_label"><label class="option" for="'. $element['#id'] .'">'. $element['#title'] .'</label></div>';
+  }
+
+  unset($element['#title']);
+  return theme('form_element', $element, $checkbox);
+}
+
+function theme_nexuscheckboxes($element) {
+  $class = 'form-checkboxes';
+  if (isset($element['#attributes']['class'])) {
+    $class .= ' '. $element['#attributes']['class'];
+  }
+  $element['#children'] = '<div class="'. $class .'">'. (!empty($element['#children']) ? $element['#children'] : '') .'</div>';
+  if ($element['#title'] || $element['#description']) {
+    unset($element['#id']);
+    return theme('form_element', $element, $element['#children']);
+  }
+  else {
+    return $element['#children'];
+  }
+}
+
+function expand_nexuscheckboxes($element) {
+  $value = is_array($element['#value']) ? $element['#value'] : array();
+  $element['#tree'] = TRUE;
+  if (count($element['#options']) > 0) {
+    if (!isset($element['#default_value']) || $element['#default_value'] == 0) {
+      $element['#default_value'] = array();
+    }
+    foreach ($element['#options'] as $key => $choice) {
+      if (!isset($element[$key])) {
+        $element[$key] = array(
+          '#type' => 'nexuscheckbox',
+          '#processed' => TRUE,
+          '#title' => $choice,
+          '#return_value' => $key,
+          '#default_value' => isset($value[$key]),
+          '#attributes' => $element['#attributes'],
+          '#ahah' => isset($element['#ahah']) ? $element['#ahah'] : NULL,
+        );
+      }
+    }
+  }
+  return $element;
+}
+#}}}
+

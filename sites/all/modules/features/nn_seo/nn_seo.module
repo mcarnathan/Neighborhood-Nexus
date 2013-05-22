@@ -1,0 +1,3 @@
+<?php
+
+include_once('nn_seo.features.inc');

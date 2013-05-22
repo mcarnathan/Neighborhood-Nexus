@@ -1,0 +1,5 @@
+; $Id: os_custom.info 513 2008-12-01 20:18:59Z jhedstrom $
+name = OpenSourcery Customization
+description = "Customization code. Includes OpenSourcery testing suite"
+package ="OpenSourcery"
+core = 6.x

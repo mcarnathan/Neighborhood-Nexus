@@ -1,0 +1,12 @@
+<?php
+// $Id$
+
+function os_custom_form_alter( &$form, $form_state, $form_id ) {
+    if(
+        ( $form_id == 'simplenews_block_form_1' )
+        and
+        ( $form['submit']['#value'] == t('Save')
+    )) {
+        $form['submit']['#value'] = t('Subscribe');
+    }
+}

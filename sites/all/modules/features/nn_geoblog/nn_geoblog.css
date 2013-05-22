@@ -1,0 +1,13 @@
+.location-current-coordinates-fieldset,
+#gmap-auto1map-locpick_latitude0-wrapper,
+#gmap-auto3map-locpick_latitude0-wrapper,
+#gmap-auto1map-locpick_longitude0-wrapper,
+#gmap-auto3map-locpick_longitude0-wrapper,
+#gmap-auto1map-locpick_longitude0-wrapper + .description,
+#gmap-auto3map-locpick_longitude0-wrapper + .description,
+#edit-field-location-0-street-wrapper label {
+  display: none;
+}
+#edit-field-location-0-street {
+  width: 95%;
+}

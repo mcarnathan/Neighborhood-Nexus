@@ -1,0 +1,250 @@
+/* $Id */
+
+/**
+ * @file
+ *   OpenSourcery custom CSS
+ */
+
+#page {
+		font-size: 0.7em;
+	 	line-height: 1.5em;
+}
+
+#logo {
+	  margin: 10px;
+}
+
+
+h1 {
+		color: #1582DC;
+		border-bottom: 1px solid #1582DC;
+}
+
+h2 {
+		font-weight: bold;	
+	  color: #12175e;
+}
+
+h2.title {
+		color: #12175e;
+}
+
+.sidebar-left #content {
+	width: 770px;
+	margin-left: 189px;
+	padding: 10px 0;
+}
+
+#sidebar-left {
+		padding-left: 0px;
+}
+
+#sidebar-left-inner {
+	  background: #0c7bce;
+		margin: 0 10px 0 0;
+}
+
+#sidebar-left h2 {
+		border-bottom: none;
+		color: #0c7bce;
+}
+
+.menu-level-2 ul li {
+		list-style-type: none;
+}
+
+.menu-level-2 ul li a:link, .menu-level-2 ul li a:visited  {
+		color: #b2cfeb;
+		text-decoration: none;
+		display: block;
+		padding: 3px 5px;
+}
+
+.menu-level-2 ul li a:hover {
+		color: #fff887;
+		background: #12175e;
+}
+
+#content-left {
+    width: 384
+}
+
+#content-right {
+    width: 384
+}
+
+
+#nexus-reports-results th {
+    font-size: 0.6em;
+}
+
+#edit-geography-school-system-wrapper {
+    display: none;
+}
+
+#nexus-reports-form-wrapper #edit-explore {
+    clear: both;
+    display: block;
+}
+
+#block-block-7 br {
+    display: none;
+}
+
+#block-block-7 span a {
+    margin-top: 10px;
+    display: block;
+}
+
+#block-block-7 div.block-inner div.content form div {
+    width: 90% !important;
+    margin-top: 20px;
+}
+
+#block-block-7 div.block-inner div.content form div input {
+    width: 140px;
+}
+
+#block-block-7 div.block-inner div.content form div p span {
+    display: none;
+}
+
+#navbar {
+		margin-top: 0px;
+		margin-bottom: 5px;
+}
+
+#navbar #primary {
+		background: #12175e url(images/nav_bg.gif) top left no-repeat;
+		border-top: 0;
+		height: 30px;
+		border-top: #e7eff9;
+}
+
+#primary {
+	margin-left: 0;
+}
+
+/* DATA CENTER */
+
+/* DATA CENTER TABLE STYLING */
+
+#nexus-reports-right {
+	border-left: 0;
+	padding-left: 0;
+}	
+
+#nexus-reports-form {
+	padding: 100px 0px 0px;
+}
+
+tr.even, tr.odd {
+	height: 65px;	
+}
+
+td {
+	font-family: Helvetica, arial, verdana, sans-serif;
+}
+
+h2 {
+	font-family: Helvetica, arial, verdana, sans-serif;
+}
+
+#nexus-reports-results th {
+	border: 3px solid #FFFFFF;
+	color: #fff887;
+	font-size:0.6em;
+	padding:0 7px;
+	background: #0c79cb;
+	vertical-align: top;
+}
+
+#nexus-reports-right h2 a:link, #nexus-reports-right h2 a:visited {
+	background: #FFF url('images/changeBtn-BG.png') top left no-repeat;
+	height: 44px;
+	width: 100px;
+	padding: 10px 16px;
+	text-transform: uppercase;
+	font-size: 0.8em;
+	text-decoration: none;
+	font-family: "Helvetica", arial, verdana, sans-serif;
+}
+
+#nexus-reports-right h2 a:hover {
+	background: #FFF url('images/changeBtn-hover-BG.png') top left no-repeat;
+	color: #12175e;
+}
+
+#nexus-reports-results th.dataGroup {
+	background: #000;
+}
+
+td.dataGroup {
+	padding-right: 15px;
+}
+
+html.js fieldset.collapsed {
+	border-top: 0;
+}	
+
+.form-item label.option {
+	display:inline;
+	font-size:0.875em;
+	font-weight:normal;
+}
+
+#os_nexus_results_form fieldset {
+	margin: 0 0px 8px;
+	background: #FFF;
+	border: 0;
+}
+
+#nexus-reports-form {
+	background: #bed9ed url('images/filtersBG.jpg') top left repeat-x;
+}
+
+#nexus-reports-form .form-item label {
+	padding: 0 8px;
+}
+
+#os_nexus_results_form {
+	font-family: Helvetica, arial, verdana, sans-serif;
+}
+
+#os_nexus_results_form legend {
+	color: #12175e;
+	background: #FFF;
+	padding: 0 16px 2px;
+	border-bottom: none;
+	font-family: Helvetica, arial, verdana, sans-serif;
+}
+
+#nexus-reports-results tr.even {
+	background: #fffdc5;
+}
+
+#nexus-reports-results tr.odd {
+	background: #fff;
+}
+
+#os_nexus_results_form {
+	padding-bottom: 10px;
+}
+
+html.js fieldset.collapsed legend a, html.js fieldset.collapsed legend a:visited  {
+	color: #0c7bce;
+}
+
+.collapse-processed a {
+	color: #12175e;
+}
+
+#nexus-reports-results td {
+  text-align: center;
+}
+
+
+.clear {
+   clear: both;
+} 
+

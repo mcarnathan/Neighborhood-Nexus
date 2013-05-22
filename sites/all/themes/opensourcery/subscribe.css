@@ -1,0 +1,52 @@
+#node-78 div.node-inner div.content form div {
+    width: 224px !important;
+}
+
+#node-78 div.node-inner div.content form div:after {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}
+
+#node-78 div.node-inner div.content form div strong span {
+    display: block;
+    clear: both;
+    float: left;
+    width: 100%;
+}
+
+#node-78 div.node-inner div.content form div br {
+    display: none;
+}
+
+#node-78 div.node-inner div.content form div input {
+    clear: both;
+    float: left;
+}
+
+#node-78 div.node-inner div.content form div label {
+    float: left;
+    clear: left;
+}
+
+#node-78 div.node-inner div.content form div span {
+    float: left;
+}
+
+#node-78 div.node-inner div.content form div span a {
+    margin-top: 10px;
+    display: block;
+}
+
+#node-78 div.node-inner div.content form div p span[style="color: rgb(51, 51, 51);"] {
+    display: none;
+}
+
+#node-78 div.node-inner div.content form div p[style="text-align: left; margin-top: 10px; margin-bottom: 10px;"] span[style="color: rgb(51, 51, 51);"] {
+    display: inline;
+}
+
+
+
