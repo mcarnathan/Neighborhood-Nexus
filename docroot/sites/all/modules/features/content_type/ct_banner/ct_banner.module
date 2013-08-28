@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Content Type: Banner feature.
+ */
+
+include_once 'ct_banner.features.inc';
