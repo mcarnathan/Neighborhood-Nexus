@@ -1,0 +1,10 @@
+name = Field: Image
+core = 7.x
+package = Field
+version = 7.x-1.0
+project = field_image
+dependencies[] = features
+dependencies[] = image
+features[features_api][] = api:2
+features[field_base][] = field_image
+project path = sites/all/modules/features/field

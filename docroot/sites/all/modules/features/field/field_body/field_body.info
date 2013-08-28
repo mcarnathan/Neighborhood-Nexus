@@ -1,0 +1,10 @@
+name = Field: Body
+core = 7.x
+package = Field
+version = 7.x-1.0
+project = field_body
+dependencies[] = features
+dependencies[] = text
+features[features_api][] = api:2
+features[field_base][] = body
+project path = sites/all/modules/features/field
