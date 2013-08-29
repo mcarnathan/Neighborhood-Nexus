@@ -1,0 +1,10 @@
+name = View: Story
+core = 7.x
+package = View
+dependencies[] = ct_story
+dependencies[] = views
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:2
+features[views_view][] = story
+features_exclude[dependencies][ctools] = ctools
+project path = sites/all/modules/features/view
