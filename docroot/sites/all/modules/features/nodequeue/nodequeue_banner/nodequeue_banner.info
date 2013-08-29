@@ -1,0 +1,10 @@
+name = Nodequeue: Banner
+core = 7.x
+package = Features
+version = 7.x-1.0
+project = nodequeue_banner
+dependencies[] = ct_banner
+dependencies[] = fe_nodequeue
+features[fe_nodequeue][] = banner
+features[features_api][] = api:2
+project path = sites/all/modules/features/nodequeue
