@@ -21,4 +21,5 @@ features[user_permission][] = edit own page content
 features[variable][] = comment_page
 features[variable][] = node_options_page
 features[variable][] = node_submitted_page
+features[variable][] = pathauto_node_page_pattern
 project status url = sites/all/modules/features/content_type

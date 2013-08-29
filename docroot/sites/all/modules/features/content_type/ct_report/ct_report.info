@@ -26,5 +26,6 @@ features[variable][] = menu_parent_report
 features[variable][] = node_options_report
 features[variable][] = node_preview_report
 features[variable][] = node_submitted_report
+features[variable][] = pathauto_node_report_pattern
 features[variable][] = save_continue_report
 project path = sites/all/modules/features/content_type
