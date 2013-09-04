@@ -1,0 +1,4 @@
+name = Blank
+description = Blank
+core = 7.x
+stylesheets[all][] = css/screen.css

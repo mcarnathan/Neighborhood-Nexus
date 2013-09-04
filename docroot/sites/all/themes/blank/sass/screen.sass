@@ -1,0 +1,469 @@
+/*
+  Welcome to Compass.
+  In this file you should write your main styles. (or centralize your imports)
+  Import this file using the following HTML or equivalent:
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
+
+@import compass/reset
+
+body
+  font-family: "Helvetica Neue",Helvetica,Tahoma,sans-serif
+  padding-top: 1em
+  background: #e7eff9 url('images/body_bg.gif') repeat-x
+
+#page
+  overflow: hidden
+  overflow-y: hidden
+  overflow-x: hidden
+
+a
+  color: #1582dc
+  font-weight: bold
+
+a:hover
+  color: #5bd
+
+#header
+  padding-top: 10px
+  background: transparent url('images/header_color_bars.png') no-repeat
+  overflow: hidden
+  width: 960px
+  height: 125px
+
+#header-inner
+  background: transparent url('images/header_photos.jpg') no-repeat 100% 0
+  height: 125px
+
+#logo-title
+  background: transparent url('images/header_globe.png') no-repeat
+  height: 125px
+
+#logo a
+  text-indent: -5000px
+  background: transparent url('images/neighborhood_nexus.png') no-repeat 15px 15px
+  width: 265px
+  height: 77px
+  display: block
+
+#site-name
+  position: relative
+
+#site-name a
+  text-indent: -5000px
+  background: transparent url('images/connecting_atlantas_communities.png') no-repeat
+  width: 247px
+  height: 16px
+  display: block
+  position: absolute
+  top: 97px
+  left: 635px
+
+#skip-to-nav
+  text-indent: -5000px
+
+#navbar #primary
+  background-color: #12175e
+  height: 30px
+
+#navbar #primary ul li
+  padding: 0
+
+#navbar #primary ul a
+  color: #fff
+  font-size: 1.0em
+  font-weight: normal
+  text-decoration: none
+  padding: 6px 1em 0 1em
+  height: 24px
+  display: block
+
+#navbar #primary ul a:hover
+  background-color: #fff
+  color: #12175e
+
+#navbar #primary ul a.active
+  color: #0c79cb
+
+h1
+  font-size: 1em
+  text-transform: uppercase
+  font-weight: bold
+  border-bottom: 2px solid #1582dc
+
+h2
+  color: #1582dc
+  font-family: Georgia,Palatino,"Times New Roman",serif
+  font-weight: normal
+
+h3
+  color: #439639
+  color: #444
+  font-family: Georgia,Palatino,"Times New Roman",serif
+  font-weight: normal
+
+#main
+  background: transparent
+
+.sidebar-left #main
+  background: transparent url(images/content_bg.gif) top left repeat-y
+
+.no-sidebars #main
+  background: transparent url('images/content_bg_wide.gif') repeat-y 100% 0
+
+#content-inner
+  padding: 15px
+  width: 940px
+
+.content_left_without_right,
+.content_right_without_left
+  width: 940px
+
+.content_left_with_right,
+.content_right_with_left
+  width: 369px
+
+#sidebar-left
+  font-size: .9em
+  margin-top: 0
+  width: 182px
+
+#sidebar-left h2
+  font-size: 1.1em
+  margin: 3em 0 .5em 0
+
+#sidebar-left p
+  margin: 0 0 .5em 0
+
+#sidebar-left #edit-mail-wrapper label
+  display: none
+
+#sidebar-left .form-radios
+  width: auto
+  display: none
+
+#block-menu_block-1 h2
+  margin-top: .3em
+
+.menu-level-2 ul
+  margin: 0
+
+.menu-level-2 ul li
+  list-style: none
+
+#footer
+  color: #999
+  font-size: .8em
+  text-align: right
+  padding: 15px 10px 0 0
+  background: transparent url('images/footer_bg.gif') no-repeat 100% 0
+
+.no-sidebars #footer
+  background: transparent url('images/footer_bg_wide.gif') no-repeat 100% 0
+
+#navbar a
+  float: left
+
+#s3slider
+  width: 330px
+  height: 300px
+  position: relative
+  overflow: hidden
+
+#s3sliderContent
+  width: 340px
+  position: absolute
+  top: 0
+  margin-left: 0
+
+.s3sliderImage
+  float: left
+  position: relative
+  display: none
+
+.s3sliderImage span
+  position: absolute
+  left: 0
+  font: 10px/15px Arial, Helvetica, sans-serif
+  padding: 10px 13px
+  width: 330px
+  background-color: #000
+  filter: alpha(opacity=70)
+  -moz-opacity: 0.7
+  -khtml-opacity: 0.7
+  opacity: 0.7
+  color: #fff
+  display: none
+  bottom: 0
+
+.clear
+  clear: both
+
+.neighborhood-corner h1
+  font-size: 18px
+  text-transform: none
+  font-weight: bold
+  border-bottom: none
+
+.neighborhood-corner h2
+  font-size: 15px
+  font-family: "Helvetica Neue",Helvetica,Tahoma,sans-serif
+  margin-top: 0
+  font-weight: bold
+
+.neighborhood-corner h3
+  border-bottom: none
+
+.neighborhood-corner #content-left
+  width: 690px
+  margin-right: 10px
+
+.neighborhood-corner #content-right
+  width: 220px
+
+.neighborhood-corner #block-views-neighborhood_corner-block_2
+  margin-bottom: 20px
+
+.neighborhood-corner #content-right h2
+  font-family: "Helvetica Neue",Helvetica,Tahoma,sans-serif
+  font-size: 1.1em
+  color: #12175e
+
+.neighborhood-corner #content-left .block-views
+  clear: left
+
+.neighborhood-corner #content-right .block
+  -moz-border-radius: 10px
+  -webkit-border-radius: 10px
+  border-radius: 10px
+  border: 1px solid #ccc
+  -webkit-box-shadow: 0 0 3px #aaa
+  -mox-box-shadow: 0 0 3px #aaa
+  box-shadow: 0 0 3px #aaa
+  padding: 10px
+  margin-bottom: 10px
+
+.neighborhood-corner #content-right #block-menu-menu-user-admin
+  -moz-border-radius: none
+  -webkit-border-radius: none
+  border-radius: none
+  border: none
+  -webkit-box-shadow: none
+  -mox-box-shadow: none
+  box-shadow: none
+  padding: 0px
+  margin-bottom: 0px
+
+.neighborhood-corner #content-left .feed-icons
+  float: right
+  margin-top: -33px
+  margin-bottom: 15px
+
+.neighborhood-corner #content-left .buildmode-sticky,
+.neighborhood-corner #content-left .buildmode-teaser
+  -moz-border-radius: 10px
+  -webkit-border-radius: 10px
+  border-radius: 10px
+  border: 1px solid #ccc
+  -webkit-box-shadow: 0 0 3px #aaa
+  -mox-box-shadow: 0 0 3px #aaa
+  box-shadow: 0 0 3px #aaa
+  padding: 10px
+  margin-bottom: 10px
+
+.neighborhood-corner #content-left .buildmode-sticky .nd-region-middle:after,
+.neighborhood-corner #content-left .buildmode-teaser .nd-region-middle:after
+  content: "."
+  display: block
+  height: 0
+  clear: both
+  visibility: hidden
+
+.neighborhood-corner #content-left .field-body
+  margin-right: 10px
+
+.neighborhood-corner #content-left .buildmode-sticky .nd-region-right,
+.neighborhood-corner #content-left .buildmode-teaser .nd-region-right
+  text-align: center
+
+.neighborhood-corner #content-left .buildmode-sticky .nd-region-right .field-photos .field-item,
+.neighborhood-corner #content-left .buildmode-teaser .nd-region-right .field-photos .field-item
+  float: none
+  margin: 0
+
+.neighborhood-corner #content-left .profile .picture
+  float: left
+
+.page-node-add-story .node-form .admin,
+.node-type-story .node-form .admin
+  margin-top: 15px
+
+.node-type-story h1
+  float: left
+
+.node-type-story .submitted img
+  vertical-align: middle
+  margin-right: 10px
+
+.node-type-story .field-sharethis
+  text-align: right
+  margin-right: 10px
+
+.node-type-story .field-sharethis .stButton
+  margin: 0
+
+.node-type-story .buildmode-full .field-what-can-be-done .field-label,
+.node-type-story .buildmode-full .field-photos .field-label,
+.node-type-story .buildmode-full .field-videos .field-label,
+.node-type-story .buildmode-full .field-maps .field-label
+  font-size: 15px
+  color: #1582dc
+  font-family: "Helvetica Neue",Helvetica,Tahoma,sans-serif
+  margin-bottom: 5px
+
+.node-type-story .buildmode-full .field-submitted,
+.node-type-story .buildmode-full .field-location,
+.node-type-story .buildmode-full .field-what-can-be-done,
+.node-type-story .buildmode-full .field-photos,
+.node-type-story .buildmode-full .field-videos,
+.node-type-story .buildmode-full .field-maps
+  margin-bottom: 15px
+
+.node-type-story .buildmode-full .field-photos .field-item,
+.node-type-story .buildmode-full .field-videos .field-item
+  float: left
+  margin-right: 10px
+  margin-bottom: 10px
+
+.node-type-story .buildmode-full .field-photos:after,
+.node-type-story .buildmode-full .field-videos:after
+  content: "."
+  display: block
+  height: 0
+  clear: left
+  visibility: hidden
+
+.buildmode-bubble
+  width: 300px
+  height: 200px
+  overflow-y: scroll
+  overflow-x: hidden
+
+.buildmode-bubble .node-type-story .field-photos,
+.buildmode-sticky .node-type-story .field-photos,
+.buildmode-teaser .node-type-story .field-photos
+  clear: right
+  float: right
+  margin-left: 10px
+
+.buildmode-bubble .node-type-story .field-read-more,
+.buildmode-sticky .node-type-story .field-read-more,
+.buildmode-teaser .node-type-story .field-read-more
+  clear: right
+  float: right
+  margin-right: 45px
+
+.node-type-story .field-terms
+  font-size: 10px
+
+.node-type-story .comment .submitted
+  float: left
+  text-align: center
+  width: 150px
+  margin-right: 10px
+  margin-top: 8px
+
+.node-type-story .comment .submitted img
+  margin-right: 0
+
+.node-type-story .comment .content
+  -moz-border-radius: 10px
+  -webkit-border-radius: 10px
+  border-radius: 10px
+  border: 1px solid #ccc
+  -webkit-box-shadow: 0 0 3px #aaa
+  -mox-box-shadow: 0 0 3px #aaa
+  box-shadow: 0 0 3px #aaa
+  padding: 10px
+  margin-bottom: 10px
+  margin-left: 150px
+
+.node-type-story .comment .content div.links
+  text-align: right
+
+#block-menu-menu-user-admin h2
+  display: none
+
+#block-menu-menu-user-admin ul
+  margin: 0
+  padding: 0
+
+#block-menu-menu-user-admin li
+  display: inline
+  float: left
+  text-align: center
+  margin: 0px 2px 10px
+
+#block-menu-menu-user-admin li.first
+  margin-left: 0px
+
+#block-menu-menu-user-admin li.last
+  margin-right: 0px
+
+#block-menu-menu-user-admin li a.single
+  line-height: 35px
+
+#block-views-term_blocks-block_2
+  clear: left
+
+#block-menu-menu-user-admin li a
+  background: -webkit-gradient('linear, left top, left bottom, color-stop(0.05, #79bbff), color-stop(1, #378de5)')
+  background: -moz-linear-gradient('center top, #79bbff 5%, #378de5 100%')
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#79bbff', endColorstr='#378de5')
+  background-color: #79bbff
+  -moz-border-radius: 6px
+  -webkit-border-radius: 6px
+  border-radius: 6px
+  border: 1px solid #84bbf3
+  display: inline-block
+  color: #fff
+  font-family: arial
+  font-size: 10px
+  padding: 6px
+  text-decoration: none
+  width: 55px
+  height: 35px
+
+#block-menu-menu-user-admin li a:hover
+  background: -webkit-gradient('linear, left top, left bottom, color-stop(0.05, #378de5), color-stop(1, #79bbff)')
+  background: -moz-linear-gradient('center top, #378de5 5%, #79bbff 100%')
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#378de5', endColorstr='#79bbff')
+  background-color: #378de5
+
+#block-menu-menu-user-admin li a:active
+  position: relative
+  top: 1px
+
+.view-term-blocks .more-link
+  color: #1582dc
+  cursor: pointer
+
+.filefield-element .widget-preview
+  max-width: none
+
+/* Remove inline styles from node-banner.tpl.php */
+.view-rotating-banner .node-inner
+  background: #fff
+
+.view-rotating-banner .node-inner-teaser
+  overflow: hidden
+
+.view-rotating-banner .banner-left
+  width: 450px
+
+.view-rotating-banner .banner-right
+  width: 400px
+  text-align: left
+
+.view-rotating-banner .banner-right a
+  text-decoration: none
+
