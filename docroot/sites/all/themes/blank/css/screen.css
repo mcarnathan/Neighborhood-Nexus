@@ -71,7 +71,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 body {
   font-family: "Helvetica Neue", Helvetica, Tahoma, sans-serif;
   padding-top: 1em;
-  background: #e7eff9 url("images/body_bg.gif") repeat-x;
+  background: #e7eff9 url('../images/body_bg.gif?1333414884') repeat-x;
 }
 
 /* line 14, ../sass/screen.sass */
@@ -95,7 +95,7 @@ a:hover {
 /* line 26, ../sass/screen.sass */
 #header {
   padding-top: 10px;
-  background: transparent url("images/header_color_bars.png") no-repeat;
+  background: transparent url('../images/header_color_bars.png') no-repeat;
   overflow: hidden;
   width: 960px;
   height: 125px;
@@ -103,20 +103,20 @@ a:hover {
 
 /* line 33, ../sass/screen.sass */
 #header-inner {
-  background: transparent url("images/header_photos.jpg") no-repeat 100% 0;
+  background: transparent url('../images/header_photos.jpg') no-repeat 100% 0;
   height: 125px;
 }
 
 /* line 37, ../sass/screen.sass */
 #logo-title {
-  background: transparent url("images/header_globe.png") no-repeat;
+  background: transparent url('../images/header_globe.png') no-repeat;
   height: 125px;
 }
 
 /* line 41, ../sass/screen.sass */
 #logo a {
   text-indent: -5000px;
-  background: transparent url("images/neighborhood_nexus.png") no-repeat 15px 15px;
+  background: transparent url('../images/neighborhood_nexus.png') no-repeat 15px 15px;
   width: 265px;
   height: 77px;
   display: block;
@@ -130,7 +130,7 @@ a:hover {
 /* line 51, ../sass/screen.sass */
 #site-name a {
   text-indent: -5000px;
-  background: transparent url("images/connecting_atlantas_communities.png") no-repeat;
+  background: transparent url('../images/connecting_atlantas_communities.png') no-repeat;
   width: 247px;
   height: 16px;
   display: block;
@@ -207,12 +207,12 @@ h3 {
 
 /* line 107, ../sass/screen.sass */
 .sidebar-left #main {
-  background: transparent url(images/content_bg.gif) top left repeat-y;
+  background: transparent url('../images/content_bg.gif') top left repeat-y;
 }
 
 /* line 110, ../sass/screen.sass */
 .no-sidebars #main {
-  background: transparent url("images/content_bg_wide.gif") repeat-y 100% 0;
+  background: transparent url('../images/content_bg_wide.gif') repeat-y 100% 0;
 }
 
 /* line 113, ../sass/screen.sass */
@@ -283,12 +283,12 @@ h3 {
   font-size: 0.8em;
   text-align: right;
   padding: 15px 10px 0 0;
-  background: transparent url("images/footer_bg.gif") no-repeat 100% 0;
+  background: transparent url('../images/footer_bg.gif') no-repeat 100% 0;
 }
 
 /* line 160, ../sass/screen.sass */
 .no-sidebars #footer {
-  background: transparent url("images/footer_bg_wide.gif") no-repeat 100% 0;
+  background: transparent url('../images/footer_bg_wide.gif') no-repeat 100% 0;
 }
 
 /* line 163, ../sass/screen.sass */
