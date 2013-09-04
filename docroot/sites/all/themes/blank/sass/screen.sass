@@ -5,7 +5,9 @@
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" />
 
 @import compass/reset
+@import compass/css3
 
+/* Sitewide */
 body
   font-family: "Helvetica Neue",Helvetica,Tahoma,sans-serif
   font-size: 62.5%
@@ -65,6 +67,35 @@ body
 
 .no-sidebars .footer
   background: transparent image-url('footer_bg_wide.gif') no-repeat 100% 0
+
+
+/* Frontpage */
+.page-home .content-wrapper
+  section .panel-pane
+    border: 1px solid #ccc
+    +border-radius(4px)
+    +single-box-shadow(#d6d6d6)
+    h2
+      font-size: 1.6em
+      text-align: center
+  .banner .panel-pane
+    margin-bottom: 10px
+    width: 100%
+  .frontpage-content
+    .panel-pane.pane-menu-menu-quick-links
+      margin-left: 0
+      width: 120px
+    .panel-pane
+      height: 200px
+      margin: 0 5px
+      padding: 24px
+      width: 190px
+    .pane-3
+      margin-right: 0
+
+.frontpage-content .panel-pane
+  float: left
+
 
 #page
   overflow: hidden
