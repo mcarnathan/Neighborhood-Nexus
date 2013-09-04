@@ -49,6 +49,21 @@ body
         &.active
           color: #0c79cb
 
+.content-wrapper
+  background: transparent image-url('content_bg_wide.gif') repeat-y 100% 0
+  padding: 20px
+
+.footer
+  background: transparent image-url('footer_bg_wide.gif') no-repeat 100% 0
+  color: #999
+  font-size: .9em
+  height: 40px
+  text-align: right
+  padding: 15px 10px 0 0
+
+.no-sidebars .footer
+  background: transparent image-url('footer_bg_wide.gif') no-repeat 100% 0
+
 #page
   overflow: hidden
   overflow-y: hidden
@@ -154,16 +169,6 @@ h3
   margin: 0
   li
     list-style: none
-
-#footer
-  color: #999
-  font-size: .8em
-  text-align: right
-  padding: 15px 10px 0 0
-  background: transparent image-url('footer_bg.gif') no-repeat 100% 0
-
-.no-sidebars #footer
-  background: transparent image-url('footer_bg_wide.gif') no-repeat 100% 0
 
 #navbar a
   float: left
