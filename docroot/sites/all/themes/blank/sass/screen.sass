@@ -8,8 +8,46 @@
 
 body
   font-family: "Helvetica Neue",Helvetica,Tahoma,sans-serif
+  font-size: 62.5%
   padding-top: 1em
   background: #e7eff9 image-url('body_bg.gif') repeat-x
+
+#page-wrapper
+  margin: 0 auto
+  width: 960px
+
+.header
+  background: image-url('bg_header.png') no-repeat
+  height: 165px
+  #logo img
+    margin: 35px 0 7px 25px
+  .slogan a
+    color: #fff
+    float: right
+    font-size: 1.6em
+    font-weight: 100
+    margin: 0 80px 4px 0
+    text-decoration: none
+  nav
+    clear: both
+    ul li
+      float: left
+      list-style: none
+      margin: 0
+      padding: 0.3em 0.5em 0 0
+      a
+        color: #fff
+        display: block
+        font-size: 1.1em
+        font-weight: normal
+        text-decoration: none
+        padding: 12px 1em 0 1em
+        height: 25px
+        &:hover
+          background-color: #fff
+          color: #12175e
+        &.active
+          color: #0c79cb
 
 #page
   overflow: hidden
@@ -57,32 +95,6 @@ a:hover
   position: absolute
   top: 97px
   left: 635px
-
-#skip-to-nav
-  text-indent: -5000px
-
-#navbar #primary
-  background-color: #12175e
-  height: 30px
-
-#navbar #primary ul li
-  padding: 0
-
-#navbar #primary ul a
-  color: #fff
-  font-size: 1.0em
-  font-weight: normal
-  text-decoration: none
-  padding: 6px 1em 0 1em
-  height: 24px
-  display: block
-
-#navbar #primary ul a:hover
-  background-color: #fff
-  color: #12175e
-
-#navbar #primary ul a.active
-  color: #0c79cb
 
 h1
   font-size: 1em
