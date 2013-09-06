@@ -81,15 +81,30 @@ body
   .banner .panel-pane
     margin-bottom: 10px
     width: 100%
+    a
+      font-weight: normal
+      text-decoration: none
+    h2
+      text-align: left
+    .views-field-field-banner-image
+      float: left
+      padding: 20px
+    .views-field-title
+      padding: 20px 0 20px
   .frontpage-content
     .panel-pane.pane-menu-menu-quick-links
       margin-left: 0
-      width: 120px
+      .pane-content li
+        list-style: none
+        a
+          display: block
+          height: 25px
+          padding: 15px 0 0 30px
     .panel-pane
-      height: 200px
+      height: 250px
       margin: 0 5px
-      padding: 24px
-      width: 190px
+      padding: 20px
+      width: 180px
     .pane-3
       margin-right: 0
 
@@ -104,9 +119,13 @@ body
 
 a
   color: #1582dc
+  font-size: 1.1em
   font-weight: bold
   &:hover
     color: #5bd
+
+p
+  font-size: 1.1em
 
 #header
   padding-top: 10px
@@ -459,16 +478,3 @@ h3
 
 .filefield-element .widget-preview
   max-width: none
-
-.view-rotating-banner
-  .node-inner
-    background: #fff
-  .node-inner-teaser
-    overflow: hidden
-  .banner-left
-    width: 450px
-  .banner-right
-    width: 400px
-    text-align: left
-    a
-      text-decoration: none
