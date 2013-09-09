@@ -42,6 +42,9 @@ function ct_story_strongarm() {
         'title' => array(
           'weight' => '0',
         ),
+        'path' => array(
+          'weight' => '10',
+        ),
       ),
       'display' => array(),
     ),

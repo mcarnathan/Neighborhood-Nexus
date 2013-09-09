@@ -36,7 +36,7 @@ function ct_story_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'body',
-    'label' => 'What Can Be Done',
+    'label' => 'Tell Your Story',
     'required' => 0,
     'settings' => array(
       'display_summary' => 0,
@@ -51,7 +51,7 @@ function ct_story_field_default_field_instances() {
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 1,
+      'weight' => 2,
     ),
   );
 
@@ -385,9 +385,9 @@ function ct_story_field_default_field_instances() {
   t('Please provide information on how the community can help improve this experience or better the situation.');
   t('Select the county or counties related to this story or where this story occurred.');
   t('Tags');
+  t('Tell Your Story');
   t('Upload your Weave map images or other visuals to help tell your story.');
   t('Videos');
-  t('What Can Be Done');
 
   return $field_instances;
 }
