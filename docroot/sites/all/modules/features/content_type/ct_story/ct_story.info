@@ -3,6 +3,7 @@ core = 7.x
 package = Content Type
 version = 7.x-1.0
 project = ct_story
+dependencies[] = autocomplete_deluxe
 dependencies[] = ctools
 dependencies[] = features
 dependencies[] = field_body
