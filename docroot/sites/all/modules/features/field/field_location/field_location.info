@@ -1,0 +1,10 @@
+name = Field: Location
+core = 7.x
+package = Field
+version = 7.x-1.0
+project = field_location
+dependencies[] = features
+dependencies[] = location_cck
+features[features_api][] = api:2
+features[field_base][] = field_location
+project path = sites/all/modules/features/field

@@ -138,6 +138,43 @@ function ct_story_field_default_field_instances() {
     ),
   );
 
+  // Exported field_instance: 'node-story-field_location'
+  $field_instances['node-story-field_location'] = array(
+    'bundle' => 'story',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'location_cck',
+        'settings' => array(),
+        'type' => 'location_default',
+        'weight' => 10,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_location',
+    'label' => 'Story Location',
+    'required' => 1,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 0,
+      'module' => 'location_cck',
+      'settings' => array(),
+      'type' => 'location',
+      'weight' => 1,
+    ),
+  );
+
   // Exported field_instance: 'node-story-field_neighborhood'
   $field_instances['node-story-field_neighborhood'] = array(
     'bundle' => 'story',
@@ -384,6 +421,7 @@ function ct_story_field_default_field_instances() {
   t('Photos');
   t('Please provide information on how the community can help improve this experience or better the situation.');
   t('Select the county or counties related to this story or where this story occurred.');
+  t('Story Location');
   t('Tags');
   t('Tell Your Story');
   t('Upload your Weave map images or other visuals to help tell your story.');
