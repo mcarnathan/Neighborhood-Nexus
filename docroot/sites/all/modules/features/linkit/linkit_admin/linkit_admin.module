@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Linkit: Admin feature.
+ */
+
+include_once 'linkit_admin.features.inc';
