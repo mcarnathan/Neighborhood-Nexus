@@ -51,7 +51,7 @@ function ct_banner_field_default_field_instances() {
         'summary_rows' => 5,
       ),
       'type' => 'text_textarea_with_summary',
-      'weight' => 4,
+      'weight' => 3,
     ),
   );
 
@@ -112,7 +112,7 @@ function ct_banner_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'media_generic',
-      'weight' => 1,
+      'weight' => 2,
     ),
   );
 
@@ -153,6 +153,10 @@ function ct_banner_field_default_field_instances() {
         'url_cutoff' => 80,
       ),
       'enable_tokens' => 1,
+      'linkit' => array(
+        'enable' => 1,
+        'insert_plugin' => 'raw_url',
+      ),
       'rel_remove' => 'default',
       'title' => 'required',
       'title_maxlength' => 128,
@@ -166,7 +170,7 @@ function ct_banner_field_default_field_instances() {
       'module' => 'link',
       'settings' => array(),
       'type' => 'link_field',
-      'weight' => 3,
+      'weight' => 1,
     ),
   );
 

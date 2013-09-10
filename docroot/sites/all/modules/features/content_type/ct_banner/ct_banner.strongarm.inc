@@ -42,6 +42,9 @@ function ct_banner_strongarm() {
         'title' => array(
           'weight' => '0',
         ),
+        'path' => array(
+          'weight' => '4',
+        ),
       ),
       'display' => array(),
     ),
