@@ -1,6 +1,6 @@
 name = View: Reports
 core = 7.x
-package = Features
+package = View
 version = 7.x-1.0
 project = view_reports
 dependencies[] = ct_report
