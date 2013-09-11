@@ -100,6 +100,33 @@ function view_story_views_default_views() {
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
+
+  /* Display: Map */
+  $handler = $view->new_display('panel_pane', 'Map', 'panel_pane_2');
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'gmap';
+  $handler->display->display_options['style_options']['markertype'] = '';
+  $handler->display->display_options['style_options']['latfield'] = 'title';
+  $handler->display->display_options['style_options']['lonfield'] = 'title';
+  $handler->display->display_options['style_options']['markerfield'] = 'title';
+  $handler->display->display_options['style_options']['enablermt'] = 0;
+  $handler->display->display_options['style_options']['rmtfield'] = 'title';
+  $handler->display->display_options['style_options']['animation'] = '2';
+  $handler->display->display_options['style_options']['tooltipfield'] = 'title';
+  $handler->display->display_options['style_options']['bubbletextfield'] = 'title';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'fields';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['allow']['use_pager'] = 0;
+  $handler->display->display_options['allow']['items_per_page'] = 0;
+  $handler->display->display_options['allow']['offset'] = 0;
+  $handler->display->display_options['allow']['link_to_view'] = 0;
+  $handler->display->display_options['allow']['more_link'] = 0;
+  $handler->display->display_options['allow']['path_override'] = 0;
+  $handler->display->display_options['allow']['title_override'] = 'title_override';
+  $handler->display->display_options['allow']['exposed_form'] = 0;
+  $handler->display->display_options['allow']['fields_override'] = 0;
   $export['story'] = $view;
 
   return $export;

@@ -4,6 +4,7 @@ package = View
 version = 7.x-1.0
 project = view_story
 dependencies[] = ct_story
+dependencies[] = gmap
 dependencies[] = views
 dependencies[] = views_content
 features[ctools][] = views:views_default:3.0
