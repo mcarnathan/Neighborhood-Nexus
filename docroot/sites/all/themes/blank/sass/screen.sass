@@ -72,6 +72,8 @@ body
   border: 1px solid #ccc
   +border-radius(4px)
   +single-box-shadow(#d6d6d6)
+  margin-bottom: 20px
+  padding: 10px
 
 /* Frontpage */
 .page-home .content-wrapper
@@ -112,11 +114,7 @@ body
 .frontpage-content .panel-pane
   float: left
 
-
-#page
-  overflow: hidden
-  overflow-y: hidden
-  overflow-x: hidden
+/* End Frontpage */
 
 a
   color: #1582dc
@@ -127,40 +125,6 @@ a
 
 p
   font-size: 1.1em
-
-#header
-  padding-top: 10px
-  background: transparent image-url('header_color_bars.png') no-repeat
-  overflow: hidden
-  width: 960px
-  height: 125px
-
-#header-inner
-  background: transparent image-url('header_photos.jpg') no-repeat 100% 0
-  height: 125px
-
-#logo-title
-  background: transparent image-url('header_globe.png') no-repeat
-  height: 125px
-
-#logo a
-  text-indent: -5000px
-  background: transparent image-url('neighborhood_nexus.png') no-repeat 15px 15px
-  width: 265px
-  height: 77px
-  display: block
-
-#site-name
-  position: relative
-  a
-    text-indent: -5000px
-    background: transparent image-url('connecting_atlantas_communities.png') no-repeat
-    width: 247px
-    height: 16px
-    display: block
-    position: absolute
-    top: 97px
-    left: 635px
 
 h1
   font-size: 1em
@@ -178,27 +142,6 @@ h3
   color: #444
   font-family: Georgia,Palatino,"Times New Roman",serif
   font-weight: normal
-
-#main
-  background: transparent
-
-.sidebar-left #main
-  background: transparent image-url('content_bg.gif') top left repeat-y
-
-.no-sidebars #main
-  background: transparent image-url('content_bg_wide.gif') repeat-y 100% 0
-
-#content-inner
-  padding: 15px
-  width: 940px
-
-.content_left_without_right,
-.content_right_without_left
-  width: 940px
-
-.content_left_with_right,
-.content_right_with_left
-  width: 369px
 
 #sidebar-left
   font-size: .9em
@@ -226,48 +169,17 @@ h3
 #navbar a
   float: left
 
-#s3slider
-  width: 330px
-  height: 300px
-  position: relative
-  overflow: hidden
-
-#s3sliderContent
-  width: 340px
-  position: absolute
-  top: 0
-  margin-left: 0
-
-.s3sliderImage
-  float: left
-  position: relative
-  display: none
-  span
-    position: absolute
-    left: 0
-    font: 10px/15px Arial, Helvetica, sans-serif
-    padding: 10px 13px
-    width: 330px
-    background-color: #000
-    filter: alpha(opacity=70)
-    -moz-opacity: 0.7
-    -khtml-opacity: 0.7
-    opacity: 0.7
-    color: #fff
-    display: none
-    bottom: 0
-
 .clear
   clear: both
 
-.neighborhood-corner
+.page-neighborhood-corner
   h1
     font-size: 18px
     text-transform: none
     font-weight: bold
     border-bottom: none
   h2
-    font-size: 15px
+    font-size: 1.8em
     font-family: "Helvetica Neue",Helvetica,Tahoma,sans-serif
     margin-top: 0
     font-weight: bold
@@ -426,52 +338,45 @@ h3
       div.links
         text-align: right
 
-#block-menu-menu-user-admin
-  h2
-    display: none
-  ul
-    margin: 0
-    padding: 0
-  li
-    display: inline
-    float: left
-    text-align: center
-    margin: 0px 2px 10px
-    &.first
-      margin-left: 0px
-    &.last
-      margin-right: 0px
-    &.single
-      line-height: 35px
-
 #block-views-term_blocks-block_2
   clear: left
 
-#block-menu-menu-user-admin li a
-  background: -webkit-gradient('linear, left top, left bottom, color-stop(0.05, #79bbff), color-stop(1, #378de5)')
-  background: -moz-linear-gradient('center top, #79bbff 5%, #378de5 100%')
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#79bbff', endColorstr='#378de5')
-  background-color: #79bbff
-  -moz-border-radius: 6px
-  -webkit-border-radius: 6px
-  border-radius: 6px
-  border: 1px solid #84bbf3
-  display: inline-block
-  color: #fff
-  font-family: arial
-  font-size: 10px
-  padding: 6px
-  text-decoration: none
-  width: 55px
-  height: 35px
-  &:hover
-    background: -webkit-gradient('linear, left top, left bottom, color-stop(0.05, #378de5), color-stop(1, #79bbff)')
-    background: -moz-linear-gradient('center top, #378de5 5%, #79bbff 100%')
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#378de5', endColorstr='#79bbff')
-    background-color: #378de5
-  &:active
-    position: relative
-    top: 1px
+.pane-menu-menu-neighborhood-corner-admin
+  ul
+    height: 50px
+    margin: 0
+    padding: 0
+  li.leaf
+    float: left
+    line-height: 1.5em
+    list-style: none
+    text-align: center
+    margin: 0 2px 10px
+    padding: 0
+    &.first
+      margin-left: 0px
+    &.last
+      line-height: 3.5em
+      margin-right: 0px
+    a
+      background-color: #79bbff
+      +background-image(linear-gradient(#79bbff, #378de5))
+      border: 1px solid #84bbf3
+      +border-radius(6px)
+      display: inline-block
+      color: #fff
+      font-family: arial
+      font-size: 10px
+      padding: 6px
+      text-decoration: none
+      width: 55px
+      height: 35px
+      &:hover
+        background-color: #378de5
+        +background-image(linear-gradient(#378de5, #79bbff))
+      &:active
+        position: relative
+        top: 1px
 
 .view-term-blocks .more-link
   color: #1582dc
