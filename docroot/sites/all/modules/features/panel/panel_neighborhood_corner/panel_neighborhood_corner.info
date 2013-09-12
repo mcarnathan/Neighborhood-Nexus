@@ -8,5 +8,6 @@ dependencies[] = mini_panel_neighborhood_corner_sidebar
 dependencies[] = page_manager
 features[ctools][] = page_manager:pages_default:1
 features[features_api][] = api:2
+features[page_manager_handlers][] = term_view_panel_context
 features[page_manager_pages][] = neighborhood_corner
 project path = sites/all/modules/features/panel
