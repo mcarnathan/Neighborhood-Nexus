@@ -50,7 +50,7 @@ function mini_panel_neighborhood_corner_sidebar_default_panels_mini() {
     );
     $pane->css = array(
       'css_id' => '',
-      'css_class' => 'rounded',
+      'css_class' => '',
     );
     $pane->extras = array();
     $pane->position = 0;
@@ -68,8 +68,8 @@ function mini_panel_neighborhood_corner_sidebar_default_panels_mini() {
       'exposed' => array(
         'machine_name' => 'neighborhood',
       ),
-      'override_title' => 0,
-      'override_title_text' => '',
+      'override_title' => 1,
+      'override_title_text' => 'Neighborhood',
     );
     $pane->cache = array();
     $pane->style = array(
@@ -95,8 +95,8 @@ function mini_panel_neighborhood_corner_sidebar_default_panels_mini() {
       'exposed' => array(
         'machine_name' => 'county',
       ),
-      'override_title' => 0,
-      'override_title_text' => '',
+      'override_title' => 1,
+      'override_title_text' => 'County',
     );
     $pane->cache = array();
     $pane->style = array(
