@@ -4,6 +4,7 @@ package = Panel
 version = 7.x-1.0
 project = panel_neighborhood_corner
 dependencies[] = ctools
+dependencies[] = mini_panel_neighborhood_corner_sidebar
 dependencies[] = page_manager
 features[ctools][] = page_manager:pages_default:1
 features[features_api][] = api:2

@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Mini Panel: Neighborhood Corner Sidebar feature.
+ */
+
+include_once 'mini_panel_neighborhood_corner_sidebar.features.inc';

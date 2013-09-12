@@ -172,117 +172,28 @@ function panel_neighborhood_corner_default_page_manager_pages() {
     $pane->position = 0;
     $pane->locks = array();
     $display->content['new-2'] = $pane;
-    $display->panels['sidebar'][0] = 'new-2';
+    $display->panels['map'][0] = 'new-2';
     $pane = new stdClass();
     $pane->pid = 'new-3';
     $pane->panel = 'sidebar';
-    $pane->type = 'views_panes';
-    $pane->subtype = 'terms-panel_pane_1';
+    $pane->type = 'panels_mini';
+    $pane->subtype = 'neighborhood_corner_sidebar';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'exposed' => array(
-        'machine_name' => 'neighborhood',
-      ),
-      'override_title' => 1,
-      'override_title_text' => 'Neighborhood',
+      'override_title' => 0,
+      'override_title_text' => '',
     );
     $pane->cache = array();
     $pane->style = array(
       'settings' => NULL,
     );
-    $pane->css = array(
-      'css_id' => '',
-      'css_class' => 'rounded',
-    );
+    $pane->css = array();
     $pane->extras = array();
-    $pane->position = 1;
+    $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-4'] = $pane;
-    $display->panels['sidebar'][1] = 'new-4';
-    $pane = new stdClass();
-    $pane->pid = 'new-5';
-    $pane->panel = 'sidebar';
-    $pane->type = 'views_panes';
-    $pane->subtype = 'terms-panel_pane_1';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'exposed' => array(
-        'machine_name' => 'county',
-      ),
-      'override_title' => 1,
-      'override_title_text' => 'County',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array(
-      'css_id' => '',
-      'css_class' => 'rounded',
-    );
-    $pane->extras = array();
-    $pane->position = 2;
-    $pane->locks = array();
-    $display->content['new-5'] = $pane;
-    $display->panels['sidebar'][2] = 'new-5';
-    $pane = new stdClass();
-    $pane->pid = 'new-6';
-    $pane->panel = 'sidebar';
-    $pane->type = 'custom';
-    $pane->subtype = 'custom';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'admin_title' => '',
-      'title' => 'Resources',
-      'body' => '<p>Additional <a href="/neighborhood-corner-resources">resources</a> to help you tell your story</p>
-',
-      'format' => 'filtered_html',
-      'substitute' => TRUE,
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array(
-      'css_id' => '',
-      'css_class' => 'rounded',
-    );
-    $pane->extras = array();
-    $pane->position = 3;
-    $pane->locks = array();
-    $display->content['new-6'] = $pane;
-    $display->panels['sidebar'][3] = 'new-6';
-    $pane = new stdClass();
-    $pane->pid = 'new-7';
-    $pane->panel = 'sidebar';
-    $pane->type = 'custom';
-    $pane->subtype = 'custom';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'admin_title' => '',
-      'title' => 'Neighborhood Corner',
-      'body' => '<p>Learn more about <a href="/introduction-neighborhood-corner">Neighborhood Corner</a></p>
-',
-      'format' => 'filtered_html',
-      'substitute' => TRUE,
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array(
-      'css_id' => '',
-      'css_class' => 'rounded',
-    );
-    $pane->extras = array();
-    $pane->position = 4;
-    $pane->locks = array();
-    $display->content['new-7'] = $pane;
-    $display->panels['sidebar'][4] = 'new-7';
+    $display->content['new-3'] = $pane;
+    $display->panels['sidebar'][0] = 'new-3';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
