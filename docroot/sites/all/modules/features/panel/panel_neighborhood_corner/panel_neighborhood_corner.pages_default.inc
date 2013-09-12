@@ -15,7 +15,7 @@ function panel_neighborhood_corner_default_page_manager_pages() {
   $page->task = 'page';
   $page->admin_title = 'Neighborhood corner';
   $page->admin_description = '';
-  $page->path = 'neighborhood-corner';
+  $page->path = 'neighborhood-corner/!term';
   $page->access = array();
   $page->menu = array(
     'type' => 'normal',
@@ -29,7 +29,23 @@ function panel_neighborhood_corner_default_page_manager_pages() {
       'weight' => '0',
     ),
   );
-  $page->arguments = array();
+  $page->arguments = array(
+    'term' => array(
+      'id' => 1,
+      'identifier' => 'Taxonomy term: ID',
+      'name' => 'term',
+      'settings' => array(
+        'input_form' => 'term',
+        'vids' => array(
+          2 => '2',
+          3 => '3',
+          1 => 0,
+        ),
+        'breadcrumb' => 1,
+        'transform' => 0,
+      ),
+    ),
+  );
   $page->conf = array(
     'admin_paths' => FALSE,
   );
@@ -141,7 +157,11 @@ function panel_neighborhood_corner_default_page_manager_pages() {
     $pane->subtype = 'story-panel_pane_1';
     $pane->shown = TRUE;
     $pane->access = array();
-    $pane->configuration = array();
+    $pane->configuration = array(
+      'context' => array(
+        0 => 'argument_term_1',
+      ),
+    );
     $pane->cache = array();
     $pane->style = array(
       'settings' => NULL,
@@ -154,14 +174,17 @@ function panel_neighborhood_corner_default_page_manager_pages() {
     $display->panels['center'][0] = 'new-1';
     $pane = new stdClass();
     $pane->pid = 'new-2';
-    $pane->panel = 'sidebar';
-    $pane->type = 'block';
-    $pane->subtype = 'menu-menu-neighborhood-corner-admin';
+    $pane->panel = 'map';
+    $pane->type = 'views_panes';
+    $pane->subtype = 'story-panel_pane_2';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
       'override_title' => 1,
       'override_title_text' => '<none>',
+      'context' => array(
+        0 => 'argument_term_1',
+      ),
     );
     $pane->cache = array();
     $pane->style = array(
