@@ -68,16 +68,17 @@ body
 .no-sidebars .footer
   background: transparent image-url('footer_bg_wide.gif') no-repeat 100% 0
 
+.rounded
+  border: 1px solid #ccc
+  +border-radius(4px)
+  +single-box-shadow(#d6d6d6)
 
 /* Frontpage */
 .page-home .content-wrapper
-  section .panel-pane
-    border: 1px solid #ccc
-    +border-radius(4px)
-    +single-box-shadow(#d6d6d6)
-    h2
-      font-size: 1.6em
-      text-align: center
+  section .panel-pane h2
+    font-size: 1.6em
+    text-align: center
+    margin-bottom: 10px
   .banner .panel-pane
     margin-bottom: 10px
     width: 100%
