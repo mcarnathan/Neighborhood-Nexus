@@ -191,14 +191,17 @@ function panel_neighborhood_corner_default_page_manager_pages() {
     $pane->style = array(
       'settings' => NULL,
     );
-    $pane->css = array();
+    $pane->css = array(
+      'css_id' => '',
+      'css_class' => 'rounded',
+    );
     $pane->extras = array();
     $pane->position = 1;
     $pane->locks = array();
-    $display->content['new-3'] = $pane;
-    $display->panels['sidebar'][1] = 'new-3';
+    $display->content['new-4'] = $pane;
+    $display->panels['sidebar'][1] = 'new-4';
     $pane = new stdClass();
-    $pane->pid = 'new-4';
+    $pane->pid = 'new-5';
     $pane->panel = 'sidebar';
     $pane->type = 'views_panes';
     $pane->subtype = 'terms-panel_pane_1';
@@ -215,14 +218,17 @@ function panel_neighborhood_corner_default_page_manager_pages() {
     $pane->style = array(
       'settings' => NULL,
     );
-    $pane->css = array();
+    $pane->css = array(
+      'css_id' => '',
+      'css_class' => 'rounded',
+    );
     $pane->extras = array();
     $pane->position = 2;
     $pane->locks = array();
-    $display->content['new-4'] = $pane;
-    $display->panels['sidebar'][2] = 'new-4';
+    $display->content['new-5'] = $pane;
+    $display->panels['sidebar'][2] = 'new-5';
     $pane = new stdClass();
-    $pane->pid = 'new-5';
+    $pane->pid = 'new-6';
     $pane->panel = 'sidebar';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
@@ -240,14 +246,17 @@ function panel_neighborhood_corner_default_page_manager_pages() {
     $pane->style = array(
       'settings' => NULL,
     );
-    $pane->css = array();
+    $pane->css = array(
+      'css_id' => '',
+      'css_class' => 'rounded',
+    );
     $pane->extras = array();
     $pane->position = 3;
     $pane->locks = array();
-    $display->content['new-5'] = $pane;
-    $display->panels['sidebar'][3] = 'new-5';
+    $display->content['new-6'] = $pane;
+    $display->panels['sidebar'][3] = 'new-6';
     $pane = new stdClass();
-    $pane->pid = 'new-6';
+    $pane->pid = 'new-7';
     $pane->panel = 'sidebar';
     $pane->type = 'custom';
     $pane->subtype = 'custom';
@@ -265,12 +274,15 @@ function panel_neighborhood_corner_default_page_manager_pages() {
     $pane->style = array(
       'settings' => NULL,
     );
-    $pane->css = array();
+    $pane->css = array(
+      'css_id' => '',
+      'css_class' => 'rounded',
+    );
     $pane->extras = array();
     $pane->position = 4;
     $pane->locks = array();
-    $display->content['new-6'] = $pane;
-    $display->panels['sidebar'][4] = 'new-6';
+    $display->content['new-7'] = $pane;
+    $display->panels['sidebar'][4] = 'new-7';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
