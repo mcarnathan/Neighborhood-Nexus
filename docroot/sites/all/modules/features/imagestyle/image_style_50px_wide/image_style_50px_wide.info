@@ -1,0 +1,9 @@
+name = Image Style: 50px wide
+core = 7.x
+package = Features
+version = 7.x-1.0
+project = image_style_50px_wide
+dependencies[] = image
+features[features_api][] = api:2
+features[image][] = 50px_wide
+project path = sites/all/modules/features/imagestyle
