@@ -13,8 +13,8 @@
 # Using :development enables the use of FireSass but will bloat the stylesheets
 # with debug code, be sure to change to :production when moving from development
 # to production servers.
-environment = :development
-#environment = :production
+#environment = :development
+environment = :production
  
  
 # Location of the theme's resources.
@@ -23,7 +23,7 @@ css_dir = "css"
 sass_dir = "sass"
 images_dir = "images"
  
-line_comments = true
+#line_comments = true
  
 # ATTENTION: You will need the toolkit gem to  
 # compile the SASS for this project. 
@@ -75,3 +75,5 @@ preferred_syntax = :sass
 #   scss may not have changed, since we want the CSS to be compressed and have
 #   the debug info removed.
 #sass_options = (environment == :development) ? {:debug_info => true} : {:always_update => true}
+sass_options = {:sourcemap => true}
+enable_sourcemaps = true
