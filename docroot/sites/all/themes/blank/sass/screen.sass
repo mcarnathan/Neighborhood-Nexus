@@ -17,12 +17,13 @@ body
 a
   color: #1582dc
   font-size: 1.1em
-  font-weight: bold
   &:hover
     color: #5bd
 
-p
+.content-wrapper p
   font-size: 1.1em
+  line-height: 1.6em
+  margin-bottom: 10px
 
 h1
   font-size: 1em
@@ -32,15 +33,15 @@ h1
 
 h2
   color: #1582dc
-  font-family: Georgia,Palatino,"Times New Roman",serif
-  font-weight: normal
+  font-size: 1.8em
+  margin-top: 0
+  font-weight: bold
+  margin-bottom: 10px
 
 h3
   color: #439639
   color: #444
-  font-family: Georgia,Palatino,"Times New Roman",serif
   font-weight: normal
-
 
 #page-wrapper
   margin: 0 auto
@@ -93,15 +94,21 @@ h3
   text-align: right
   padding: 15px 10px 0 0
 
-.no-sidebars .footer
-  background: transparent image-url('footer_bg_wide.gif') no-repeat 100% 0
-
 .rounded
   border: 1px solid #ccc
   +border-radius(4px)
   +single-box-shadow(#d6d6d6)
   margin-bottom: 20px
   padding: 10px
+
+.clear
+  clear: both
+
+.right
+  float: right
+
+.item-list ul li
+  list-style: disc
 
 /* Frontpage */
 .page-home .content-wrapper
@@ -170,22 +177,25 @@ h3
 #navbar a
   float: left
 
-.clear
-  clear: both
-
+/* Neighborhood Corner */
 .page-neighborhood-corner
   h1
     font-size: 18px
     text-transform: none
     font-weight: bold
     border-bottom: none
-  h2
-    font-size: 1.8em
-    font-family: "Helvetica Neue",Helvetica,Tahoma,sans-serif
-    margin-top: 0
-    font-weight: bold
   h3
     border-bottom: none
+    font-size: 1.5em
+    font-weight: bold
+    margin-bottom: 10px
+  .view-id-story
+    .tags
+      margin-bottom: 5px
+      span
+        font-weight: bold
+      div
+        display: inline
   #block-views-neighborhood_corner-block_2
     margin-bottom: 20px
   #content-left
@@ -225,7 +235,6 @@ h3
   #content-right
     width: 220px
     h2
-      font-family: "Helvetica Neue",Helvetica,Tahoma,sans-serif
       font-size: 1.1em
       color: #12175e
     #block-menu-menu-user-admin
@@ -248,6 +257,9 @@ h3
       box-shadow: 0 0 3px #aaa
       padding: 10px
       margin-bottom: 10px
+
+.view-display-id-panel_pane_2
+  margin-bottom: 10px
 
 .page-node-add-story .node-form .admin,
 .node-type-story .node-form .admin
@@ -278,7 +290,6 @@ h3
     .field-maps .field-label
       font-size: 15px
       color: #1582dc
-      font-family: "Helvetica Neue",Helvetica,Tahoma,sans-serif
       margin-bottom: 5px
     .field-photos .field-item,
     .field-videos .field-item
@@ -339,9 +350,6 @@ h3
       div.links
         text-align: right
 
-#block-views-term_blocks-block_2
-  clear: left
-
 .pane-menu-menu-neighborhood-corner-admin
   ul
     height: 50px
@@ -349,15 +357,15 @@ h3
     padding: 0
   li.leaf
     float: left
-    line-height: 1.5em
+    line-height: 3.5em
     list-style: none
     text-align: center
     margin: 0 2px 10px
     padding: 0
     &.first
       margin-left: 0px
+      line-height: 1.5em
     &.last
-      line-height: 3.5em
       margin-right: 0px
     a
       background-color: #79bbff
@@ -366,7 +374,6 @@ h3
       +border-radius(6px)
       display: inline-block
       color: #fff
-      font-family: arial
       font-size: 10px
       padding: 6px
       text-decoration: none
@@ -378,6 +385,9 @@ h3
       &:active
         position: relative
         top: 1px
+
+#block-views-term_blocks-block_2
+  clear: left
 
 .view-term-blocks .more-link
   color: #1582dc
