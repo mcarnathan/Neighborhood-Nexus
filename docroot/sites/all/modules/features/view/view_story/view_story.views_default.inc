@@ -113,6 +113,11 @@ function view_story_views_default_views() {
   $handler->display->display_options['fields']['field_tags']['element_wrapper_class'] = 'tags';
   $handler->display->display_options['fields']['field_tags']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['field_tags']['delta_offset'] = '0';
+  /* Sort criterion: Content: Sticky */
+  $handler->display->display_options['sorts']['sticky']['id'] = 'sticky';
+  $handler->display->display_options['sorts']['sticky']['table'] = 'node';
+  $handler->display->display_options['sorts']['sticky']['field'] = 'sticky';
+  $handler->display->display_options['sorts']['sticky']['order'] = 'DESC';
   /* Sort criterion: Content: Post date */
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
