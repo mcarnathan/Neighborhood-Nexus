@@ -96,25 +96,70 @@ function view_story_views_default_views() {
   $handler->display->display_options['fields']['field_neighborhood']['id'] = 'field_neighborhood';
   $handler->display->display_options['fields']['field_neighborhood']['table'] = 'field_data_field_neighborhood';
   $handler->display->display_options['fields']['field_neighborhood']['field'] = 'field_neighborhood';
+  $handler->display->display_options['fields']['field_neighborhood']['element_label_type'] = 'div';
+  $handler->display->display_options['fields']['field_neighborhood']['element_label_class'] = 'field-label';
   $handler->display->display_options['fields']['field_neighborhood']['element_wrapper_type'] = 'div';
   $handler->display->display_options['fields']['field_neighborhood']['element_wrapper_class'] = 'tags';
   $handler->display->display_options['fields']['field_neighborhood']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_neighborhood']['type'] = 'textformatter_list';
+  $handler->display->display_options['fields']['field_neighborhood']['settings'] = array(
+    'textformatter_type' => 'comma',
+    'textformatter_comma_and' => 0,
+    'textformatter_comma_full_stop' => 0,
+    'textformatter_comma_override' => 0,
+    'textformatter_separator_custom' => '',
+    'textformatter_separator_custom_tag' => 'span',
+    'textformatter_separator_custom_class' => 'textformatter-separator',
+    'textformatter_comma_tag' => 'div',
+    'textformatter_class' => 'textformatter-list',
+    'textformatter_term_plain' => 0,
+  );
   $handler->display->display_options['fields']['field_neighborhood']['delta_offset'] = '0';
   /* Field: Content: County */
   $handler->display->display_options['fields']['field_county']['id'] = 'field_county';
   $handler->display->display_options['fields']['field_county']['table'] = 'field_data_field_county';
   $handler->display->display_options['fields']['field_county']['field'] = 'field_county';
+  $handler->display->display_options['fields']['field_county']['element_label_type'] = 'div';
+  $handler->display->display_options['fields']['field_county']['element_label_class'] = 'field-label';
   $handler->display->display_options['fields']['field_county']['element_wrapper_type'] = 'div';
   $handler->display->display_options['fields']['field_county']['element_wrapper_class'] = 'tags';
   $handler->display->display_options['fields']['field_county']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_county']['type'] = 'textformatter_list';
+  $handler->display->display_options['fields']['field_county']['settings'] = array(
+    'textformatter_type' => 'comma',
+    'textformatter_comma_and' => 0,
+    'textformatter_comma_full_stop' => 0,
+    'textformatter_comma_override' => 0,
+    'textformatter_separator_custom' => '',
+    'textformatter_separator_custom_tag' => 'span',
+    'textformatter_separator_custom_class' => 'textformatter-separator',
+    'textformatter_comma_tag' => 'div',
+    'textformatter_class' => 'textformatter-list',
+    'textformatter_term_plain' => 0,
+  );
   $handler->display->display_options['fields']['field_county']['delta_offset'] = '0';
   /* Field: Content: Tags */
   $handler->display->display_options['fields']['field_tags']['id'] = 'field_tags';
   $handler->display->display_options['fields']['field_tags']['table'] = 'field_data_field_tags';
   $handler->display->display_options['fields']['field_tags']['field'] = 'field_tags';
+  $handler->display->display_options['fields']['field_tags']['element_label_type'] = 'div';
+  $handler->display->display_options['fields']['field_tags']['element_label_class'] = 'field-label';
   $handler->display->display_options['fields']['field_tags']['element_wrapper_type'] = 'div';
   $handler->display->display_options['fields']['field_tags']['element_wrapper_class'] = 'tags';
   $handler->display->display_options['fields']['field_tags']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_tags']['type'] = 'textformatter_list';
+  $handler->display->display_options['fields']['field_tags']['settings'] = array(
+    'textformatter_type' => 'comma',
+    'textformatter_comma_and' => 0,
+    'textformatter_comma_full_stop' => 0,
+    'textformatter_comma_override' => 0,
+    'textformatter_separator_custom' => '',
+    'textformatter_separator_custom_tag' => 'span',
+    'textformatter_separator_custom_class' => 'textformatter-separator',
+    'textformatter_comma_tag' => 'div',
+    'textformatter_class' => 'textformatter-list',
+    'textformatter_term_plain' => 0,
+  );
   $handler->display->display_options['fields']['field_tags']['delta_offset'] = '0';
   /* Sort criterion: Content: Sticky */
   $handler->display->display_options['sorts']['sticky']['id'] = 'sticky';
