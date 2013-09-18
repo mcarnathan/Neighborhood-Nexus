@@ -118,31 +118,17 @@ function panelizer_story_panelizer_defaults() {
     $pane = new stdClass();
     $pane->pid = 'new-2';
     $pane->panel = 'center';
-    $pane->type = 'entity_field';
-    $pane->subtype = 'node:field_neighborhood';
+    $pane->type = 'custom';
+    $pane->subtype = 'custom';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'label' => 'inline',
-      'formatter' => 'textformatter_list',
-      'delta_limit' => '0',
-      'delta_offset' => '0',
-      'delta_reversed' => 0,
-      'formatter_settings' => array(
-        'textformatter_type' => 'comma',
-        'textformatter_class' => 'textformatter-list',
-        'textformatter_comma_full_stop' => 0,
-        'textformatter_comma_and' => 0,
-        'textformatter_comma_tag' => 'div',
-        'textformatter_term_plain' => 0,
-        'textformatter_comma_override' => 0,
-        'textformatter_separator_custom' => '',
-        'textformatter_separator_custom_tag' => 'span',
-        'textformatter_separator_custom_class' => 'textformatter-separator',
-      ),
-      'context' => 'panelizer',
-      'override_title' => 0,
-      'override_title_text' => '',
+      'admin_title' => 'Submitted by',
+      'title' => '',
+      'body' => '<p>Submitted by %node:author on %node:created</p>
+',
+      'format' => 'filtered_html',
+      'substitute' => 1,
     );
     $pane->cache = array();
     $pane->style = array(
@@ -158,7 +144,7 @@ function panelizer_story_panelizer_defaults() {
     $pane->pid = 'new-3';
     $pane->panel = 'center';
     $pane->type = 'entity_field';
-    $pane->subtype = 'node:field_county';
+    $pane->subtype = 'node:field_neighborhood';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
@@ -197,7 +183,7 @@ function panelizer_story_panelizer_defaults() {
     $pane->pid = 'new-4';
     $pane->panel = 'center';
     $pane->type = 'entity_field';
-    $pane->subtype = 'node:field_tags';
+    $pane->subtype = 'node:field_county';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
@@ -236,17 +222,30 @@ function panelizer_story_panelizer_defaults() {
     $pane->pid = 'new-5';
     $pane->panel = 'center';
     $pane->type = 'entity_field';
-    $pane->subtype = 'node:body';
+    $pane->subtype = 'node:field_tags';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'label' => 'hidden',
-      'formatter' => 'text_default',
-      'delta_limit' => 0,
+      'label' => 'inline',
+      'formatter' => 'textformatter_list',
+      'delta_limit' => '0',
       'delta_offset' => '0',
-      'delta_reversed' => FALSE,
-      'formatter_settings' => array(),
+      'delta_reversed' => 0,
+      'formatter_settings' => array(
+        'textformatter_type' => 'comma',
+        'textformatter_class' => 'textformatter-list',
+        'textformatter_comma_full_stop' => 0,
+        'textformatter_comma_and' => 0,
+        'textformatter_comma_tag' => 'div',
+        'textformatter_term_plain' => 0,
+        'textformatter_comma_override' => 0,
+        'textformatter_separator_custom' => '',
+        'textformatter_separator_custom_tag' => 'span',
+        'textformatter_separator_custom_class' => 'textformatter-separator',
+      ),
       'context' => 'panelizer',
+      'override_title' => 0,
+      'override_title_text' => '',
     );
     $pane->cache = array();
     $pane->style = array(
@@ -262,12 +261,12 @@ function panelizer_story_panelizer_defaults() {
     $pane->pid = 'new-6';
     $pane->panel = 'center';
     $pane->type = 'entity_field';
-    $pane->subtype = 'node:field_document';
+    $pane->subtype = 'node:body';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
-      'label' => 'above',
-      'formatter' => 'file_default',
+      'label' => 'hidden',
+      'formatter' => 'text_default',
       'delta_limit' => 0,
       'delta_offset' => '0',
       'delta_reversed' => FALSE,
@@ -288,7 +287,7 @@ function panelizer_story_panelizer_defaults() {
     $pane->pid = 'new-7';
     $pane->panel = 'center';
     $pane->type = 'entity_field';
-    $pane->subtype = 'node:field_video';
+    $pane->subtype = 'node:field_document';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
@@ -314,6 +313,32 @@ function panelizer_story_panelizer_defaults() {
     $pane->pid = 'new-8';
     $pane->panel = 'center';
     $pane->type = 'entity_field';
+    $pane->subtype = 'node:field_video';
+    $pane->shown = TRUE;
+    $pane->access = array();
+    $pane->configuration = array(
+      'label' => 'above',
+      'formatter' => 'file_default',
+      'delta_limit' => 0,
+      'delta_offset' => '0',
+      'delta_reversed' => FALSE,
+      'formatter_settings' => array(),
+      'context' => 'panelizer',
+    );
+    $pane->cache = array();
+    $pane->style = array(
+      'settings' => NULL,
+    );
+    $pane->css = array();
+    $pane->extras = array();
+    $pane->position = 7;
+    $pane->locks = array();
+    $display->content['new-8'] = $pane;
+    $display->panels['center'][7] = 'new-8';
+    $pane = new stdClass();
+    $pane->pid = 'new-9';
+    $pane->panel = 'center';
+    $pane->type = 'entity_field';
     $pane->subtype = 'node:field_photo';
     $pane->shown = TRUE;
     $pane->access = array();
@@ -337,12 +362,12 @@ function panelizer_story_panelizer_defaults() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 7;
+    $pane->position = 8;
     $pane->locks = array();
-    $display->content['new-8'] = $pane;
-    $display->panels['center'][7] = 'new-8';
+    $display->content['new-9'] = $pane;
+    $display->panels['center'][8] = 'new-9';
     $pane = new stdClass();
-    $pane->pid = 'new-9';
+    $pane->pid = 'new-10';
     $pane->panel = 'center';
     $pane->type = 'entity_field';
     $pane->subtype = 'node:field_visual';
@@ -366,12 +391,12 @@ function panelizer_story_panelizer_defaults() {
     );
     $pane->css = array();
     $pane->extras = array();
-    $pane->position = 8;
+    $pane->position = 9;
     $pane->locks = array();
-    $display->content['new-9'] = $pane;
-    $display->panels['center'][8] = 'new-9';
+    $display->content['new-10'] = $pane;
+    $display->panels['center'][9] = 'new-10';
     $pane = new stdClass();
-    $pane->pid = 'new-10';
+    $pane->pid = 'new-11';
     $pane->panel = 'center';
     $pane->type = 'node_links';
     $pane->subtype = 'node_links';
@@ -393,12 +418,12 @@ function panelizer_story_panelizer_defaults() {
       'css_class' => 'link-wrapper',
     );
     $pane->extras = array();
-    $pane->position = 9;
+    $pane->position = 10;
     $pane->locks = array();
-    $display->content['new-10'] = $pane;
-    $display->panels['center'][9] = 'new-10';
+    $display->content['new-11'] = $pane;
+    $display->panels['center'][10] = 'new-11';
     $pane = new stdClass();
-    $pane->pid = 'new-11';
+    $pane->pid = 'new-12';
     $pane->panel = 'sidebar';
     $pane->type = 'panels_mini';
     $pane->subtype = 'neighborhood_corner_sidebar';
@@ -416,10 +441,10 @@ function panelizer_story_panelizer_defaults() {
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
-    $display->content['new-11'] = $pane;
-    $display->panels['sidebar'][0] = 'new-11';
+    $display->content['new-12'] = $pane;
+    $display->panels['sidebar'][0] = 'new-12';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-2';
+  $display->title_pane = 'new-3';
   $panelizer->display = $display;
   $export['node:story:default'] = $panelizer;
 
