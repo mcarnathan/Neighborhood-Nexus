@@ -1,0 +1,8 @@
+<?php
+
+/**
+ * Implements hook_menu_alter().
+ */
+function auth_pass_reset_access_menu_alter(&$items) {
+  $items['user/password']['access callback'] = 'user_is_anonymous';
+}
