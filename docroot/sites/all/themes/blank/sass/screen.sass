@@ -92,7 +92,6 @@ td
         a
           color: #fff
           display: block
-          font-size: 1.1em
           font-weight: normal
           text-decoration: none
           padding: 12px 1em 0 1em
@@ -189,21 +188,20 @@ td
       div
         display: inline
 
-.pane-menu-menu-neighborhood-corner-admin
+.pane-system-user-menu
   ul
     height: 50px
     margin: 0
     padding: 0
   li.leaf
     +float-left
-    line-height: 3.5em
+    line-height: 1.5em
     list-style: none
     text-align: center
     margin: 0 2px 10px
     padding: 0
     &.first
       margin-left: 0px
-      line-height: 1.5em
     &.last
       margin-right: 0px
     a
@@ -211,13 +209,13 @@ td
       +background-image(linear-gradient(#79bbff, #378de5))
       border: 1px solid #84bbf3
       +border-radius(6px)
-      display: inline-block
+      display: table-cell
       color: #fff
-      font-size: 10px
       padding: 6px
       text-decoration: none
       width: 55px
       height: 35px
+      vertical-align: middle
       &:hover
         background-color: #378de5
         +background-image(linear-gradient(#378de5, #79bbff))
