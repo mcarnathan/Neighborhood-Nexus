@@ -37,7 +37,7 @@ function mini_panel_neighborhood_corner_sidebar_default_panels_mini() {
     $pane->pid = 'new-1';
     $pane->panel = 'middle';
     $pane->type = 'block';
-    $pane->subtype = 'menu-menu-neighborhood-corner-admin';
+    $pane->subtype = 'system-user-menu';
     $pane->shown = TRUE;
     $pane->access = array();
     $pane->configuration = array(
@@ -48,10 +48,7 @@ function mini_panel_neighborhood_corner_sidebar_default_panels_mini() {
     $pane->style = array(
       'settings' => NULL,
     );
-    $pane->css = array(
-      'css_id' => '',
-      'css_class' => '',
-    );
+    $pane->css = array();
     $pane->extras = array();
     $pane->position = 0;
     $pane->locks = array();
@@ -168,7 +165,7 @@ function mini_panel_neighborhood_corner_sidebar_default_panels_mini() {
     $display->content['new-5'] = $pane;
     $display->panels['middle'][4] = 'new-5';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-1';
+  $display->title_pane = '0';
   $mini->display = $display;
   $export['neighborhood_corner_sidebar'] = $mini;
 
