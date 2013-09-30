@@ -43,7 +43,7 @@ function ct_story_strongarm() {
           'weight' => '0',
         ),
         'path' => array(
-          'weight' => '10',
+          'weight' => '11',
         ),
       ),
       'display' => array(),
@@ -93,7 +93,7 @@ function ct_story_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'pathauto_node_story_pattern';
-  $strongarm->value = 'story/[node:title]';
+  $strongarm->value = 'neighborhood-corner/[node:title]';
   $export['pathauto_node_story_pattern'] = $strongarm;
 
   $strongarm = new stdClass();

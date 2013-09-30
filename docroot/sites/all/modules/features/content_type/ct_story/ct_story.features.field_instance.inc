@@ -92,7 +92,7 @@ function ct_story_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'options_select',
-      'weight' => 7,
+      'weight' => 8,
     ),
   );
 
@@ -134,7 +134,7 @@ function ct_story_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'file_generic',
-      'weight' => 5,
+      'weight' => 6,
     ),
   );
 
@@ -213,7 +213,7 @@ function ct_story_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'autocomplete_deluxe_taxonomy',
-      'weight' => 8,
+      'weight' => 9,
     ),
   );
 
@@ -263,7 +263,7 @@ function ct_story_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'image_image',
-      'weight' => 3,
+      'weight' => 4,
     ),
   );
 
@@ -304,7 +304,7 @@ function ct_story_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'autocomplete_deluxe_taxonomy',
-      'weight' => 9,
+      'weight' => 10,
     ),
   );
 
@@ -357,7 +357,7 @@ function ct_story_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'media_generic',
-      'weight' => 4,
+      'weight' => 5,
     ),
   );
 
@@ -407,7 +407,51 @@ function ct_story_field_default_field_instances() {
         'progress_indicator' => 'throbber',
       ),
       'type' => 'image_image',
-      'weight' => 6,
+      'weight' => 7,
+    ),
+  );
+
+  // Exported field_instance: 'node-story-field_what_can_be_done'
+  $field_instances['node-story-field_what_can_be_done'] = array(
+    'bundle' => 'story',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 11,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_what_can_be_done',
+    'label' => 'What Can Be Done',
+    'required' => 0,
+    'settings' => array(
+      'linkit' => array(
+        'enable' => 0,
+        'insert_plugin' => '',
+      ),
+      'text_processing' => 1,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'rows' => 5,
+      ),
+      'type' => 'text_textarea',
+      'weight' => 3,
     ),
   );
 
@@ -428,6 +472,7 @@ function ct_story_field_default_field_instances() {
   t('Tell Your Story');
   t('Upload your Weave map images or other visuals to help tell your story.');
   t('Videos');
+  t('What Can Be Done');
 
   return $field_instances;
 }
