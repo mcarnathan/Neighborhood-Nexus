@@ -239,6 +239,9 @@ function view_story_views_default_views() {
 
   /* Display: Map */
   $handler = $view->new_display('panel_pane', 'Map', 'panel_pane_2');
+  $handler->display->display_options['defaults']['pager'] = FALSE;
+  $handler->display->display_options['pager']['type'] = 'none';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
   $handler->display->display_options['style_plugin'] = 'gmap';
   $handler->display->display_options['style_options']['markertype'] = 'lblue';
