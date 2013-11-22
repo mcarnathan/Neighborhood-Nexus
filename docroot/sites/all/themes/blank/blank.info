@@ -3,3 +3,4 @@ description = Blank
 core = 7.x
 stylesheets[all][] = css/screen.css
 scripts[] = js/ie8html5.js
+scripts[] = js/toggle.js
