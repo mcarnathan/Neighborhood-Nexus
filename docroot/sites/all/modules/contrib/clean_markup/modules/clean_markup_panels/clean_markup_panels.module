@@ -1,0 +1,14 @@
+<?php
+/**
+ * @file
+ * Provides clean panels markup.
+ */
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function clean_markup_panels_ctools_plugin_directory($owner, $plugin_type) {
+  if ($owner === 'panels') {
+    return "plugins/$plugin_type";
+  }
+}

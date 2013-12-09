@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Panel: Neighborhood Corner feature.
+ */
+
+include_once 'panel_neighborhood_corner.features.inc';

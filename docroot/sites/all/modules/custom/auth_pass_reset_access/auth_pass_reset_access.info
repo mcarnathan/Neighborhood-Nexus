@@ -1,0 +1,4 @@
+name = Auth Password Reset Access
+description = Disables access to user/password for admin users.
+package = NNX
+core = 7.x

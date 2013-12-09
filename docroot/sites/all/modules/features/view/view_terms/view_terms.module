@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the View: Terms feature.
+ */
+
+include_once 'view_terms.features.inc';

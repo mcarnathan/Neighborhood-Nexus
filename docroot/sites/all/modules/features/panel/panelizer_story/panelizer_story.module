@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Panelizer: Story feature.
+ */
+
+include_once 'panelizer_story.features.inc';

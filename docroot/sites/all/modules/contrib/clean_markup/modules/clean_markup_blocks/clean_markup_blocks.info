@@ -1,0 +1,14 @@
+name = Clean block markup
+description = Provides clean block markup.
+core = 7.x
+package = Clean markup
+
+dependencies[] = block
+dependencies[] = clean_markup
+
+; Information added by drupal.org packaging script on 2013-08-15
+version = "7.x-2.0"
+core = "7.x"
+project = "clean_markup"
+datestamp = "1376581919"
+

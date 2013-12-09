@@ -1,0 +1,9 @@
+Drupal Core
+-----------
+
+
+Contrib
+-----------
+WYSIWYG: Ckeditor 4.1 ACF
+https://drupal.org/node/1956778
+https://drupal.org/files/wysiwyg-ckeditor-acf-1956778-37.patch

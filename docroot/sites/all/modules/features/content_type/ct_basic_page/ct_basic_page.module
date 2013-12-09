@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Content Type: Basic page feature.
+ */
+
+include_once 'ct_basic_page.features.inc';

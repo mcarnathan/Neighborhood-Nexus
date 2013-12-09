@@ -1,5 +1,0 @@
-; $Id: nexus.info 513 2008-12-01 20:18:59Z cgranum $
-name = Neighborhood Nexus management tool
-description = "Neighborhood Nexus management tool"
-package ="Neighborhood Nexus"
-core = 6.x
