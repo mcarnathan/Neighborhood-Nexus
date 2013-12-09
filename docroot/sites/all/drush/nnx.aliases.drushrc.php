@@ -23,12 +23,6 @@ $aliases['nnx.prod'] = array(
   ),
 );
 
-$aliases['nnx.stage'] = array(
-  'parent' => '@nnx.prod',
-  'uri' => 'dev.neighborhoodnexus.org',
-  'root' => '/var/www/stage.neighborhoodnexus.org/docroot',
-);
-
 $aliases['nnx.dev'] = array(
   'parent' => '@nnx.prod',
   'uri' => 'stage.neighborhoodnexus.org',
