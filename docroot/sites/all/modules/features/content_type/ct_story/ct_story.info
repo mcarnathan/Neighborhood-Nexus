@@ -18,6 +18,7 @@ dependencies[] = field_visual
 dependencies[] = field_what_can_be_done
 dependencies[] = file
 dependencies[] = image
+dependencies[] = lightbox2
 dependencies[] = media
 dependencies[] = node
 dependencies[] = options
