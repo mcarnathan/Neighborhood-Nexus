@@ -368,13 +368,10 @@ function ct_story_field_default_field_instances() {
     'description' => 'Upload your Weave map images or other visuals to help tell your story.',
     'display' => array(
       'default' => array(
-        'label' => 'above',
-        'module' => 'image',
-        'settings' => array(
-          'image_link' => '',
-          'image_style' => '',
-        ),
-        'type' => 'image',
+        'label' => 'hidden',
+        'module' => 'lightbox2',
+        'settings' => array(),
+        'type' => 'lightbox2__lightbox__thumbnail__large',
         'weight' => 6,
       ),
       'teaser' => array(

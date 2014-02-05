@@ -2,10 +2,12 @@
 
 $aliases['nnx.prod'] = array(
   'uri' => 'neighborhoodnexus.org',
-  'root' => '/var/www/dev.neighborhoodnexus.org/docroot',
+  'root' => '/var/www/neighborhoodnexus.org/docroot',
   'remote-host' => '74.121.193.202',
   'remote-user' => '403e',
   'path-aliases' => array(
+    '%dump-dir' => '/home/403e/dumps/',
+    '%dump' => '/home/403e/dumps/nnx.sql',
     '%files' => 'sites/default/files',
   ),
   'command-specific' => array (
@@ -25,7 +27,7 @@ $aliases['nnx.prod'] = array(
 
 $aliases['nnx.dev'] = array(
   'parent' => '@nnx.prod',
-  'uri' => 'stage.neighborhoodnexus.org',
+  'uri' => 'dev.neighborhoodnexus.org',
   'root' => '/var/www/dev.neighborhoodnexus.org/docroot',
   'command-specific' => array (
     'sql-sync' => array (

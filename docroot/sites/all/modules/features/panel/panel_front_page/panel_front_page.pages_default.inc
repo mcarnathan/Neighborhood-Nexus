@@ -206,23 +206,22 @@ function panel_front_page_default_page_manager_pages() {
 	<tbody>
 		<tr>
 			<td>Download data profiles...</td>
-			<td><a href="http://www.neighborhoodnexus.org/content/profiles-main">[[{"type":"media","view_mode":"media_original","fid":"46","attributes":{"alt":"","class":"media-image","height":"33","typeof":"foaf:Image","width":"50"}}]]</a></td>
+			<td><a href="/profiles-main"><img alt="" class="attr__typeof__foaf:Image img__fid__46 img__view_mode__media_original media-image" src="/sites/default/files/reports_50px.jpg" style="height:33px; width:50px" /></a></td>
 		</tr>
 		<tr>
 			<td>Explore interactive mapping...</td>
-			<td><a href="http://www.neighborhoodnexus.org/content/maps">[[{"type":"media","view_mode":"media_original","fid":"47","attributes":{"alt":"","class":"media-image","height":"43","typeof":"foaf:Image","width":"50"}}]]</a></td>
+			<td><a href="/maps"><img alt="" class="attr__typeof__foaf:Image img__fid__47 img__view_mode__media_original media-image" src="/sites/default/files/foreclosure_hispanic_50px.jpg" style="height:43px; width:50px" /></a></td>
 		</tr>
 		<tr>
 			<td>Download the raw data...</td>
-			<td><a href="http://www.neighborhoodnexus.org/content/data">[[{"type":"media","view_mode":"media_original","fid":"48","attributes":{"alt":"","class":"media-image","height":"23","typeof":"foaf:Image","width":"50"}}]]</a></td>
+			<td><a href="/data-center"><img alt="" class="attr__typeof__foaf:Image img__fid__48 img__view_mode__media_original media-image" src="/sites/default/files/data_pic_50px.jpg" style="height:23px; width:50px" /></a></td>
 		</tr>
 		<tr>
 			<td>Do custom research...</td>
-			<td><a href="http://www.neighborhoodnexus.org/content/services">[[{"type":"media","view_mode":"media_original","fid":"49","attributes":{"alt":"","class":"media-image","height":"21","typeof":"foaf:Image","width":"50"}}]]</a></td>
+			<td><a href="/services"><img alt="" class="attr__typeof__foaf:Image img__fid__49 img__view_mode__media_original media-image" src="/sites/default/files/ta.jpg" style="height:21px; width:50px" /></a></td>
 		</tr>
 	</tbody>
-</table>
-',
+</table>',
       'format' => 'filtered_html',
       'substitute' => TRUE,
     );
@@ -269,7 +268,7 @@ function panel_front_page_default_page_manager_pages() {
     $pane->locks = array();
     $display->content['new-5'] = $pane;
     $display->panels['second'][3] = 'new-5';
-  $display->hide_title = PANELS_TITLE_FIXED;
+  $display->hide_title = PANELS_TITLE_NONE;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
